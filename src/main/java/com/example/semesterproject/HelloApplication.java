@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BackgroundImage;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,8 +20,21 @@ public class HelloApplication extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
         Parent root = loader.load();
         Controller controller = loader.getController();
-        Scene scene = new Scene(root);
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+        Image bg = new Image("file:src/main/resources/MapFiles/havn.png");
+        ImageView mv = new ImageView(bg);
+        Group g = new Group();
+        g.getChildren().addAll(mv);
+        g.getChildren().addAll(root);
+        Scene sc = new Scene(g);
+        stage.setScene(sc);
+
+        stage.setResizable(false);
+        stage.setTitle("Skipper Skrald");
+        stage.setScene(sc);
+        stage.show();
+
+        sc.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()){
@@ -41,10 +55,6 @@ public class HelloApplication extends Application {
                 }
             }
         });
-
-        stage.setTitle("Skipper Skrald");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public static void main(String[] args) {
