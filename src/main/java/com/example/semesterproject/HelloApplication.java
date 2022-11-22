@@ -23,9 +23,16 @@ public class HelloApplication extends Application {
 
         Image bg = new Image("file:src/main/resources/MapFiles/havn.png");
         ImageView mv = new ImageView(bg);
+
+        Image ship = new Image("file:src/main/resources/Misc/skib.png");
+        ImageView shipViewer = new ImageView(ship);
+        shipViewer.setY(384-100);
+        shipViewer.setX(384-64);
+
         Group g = new Group();
-        g.getChildren().addAll(mv);
-        g.getChildren().addAll(root);
+        g.getChildren().add(mv);
+        g.getChildren().add(root);
+        g.getChildren().add(shipViewer);
         Scene sc = new Scene(g);
         stage.setScene(sc);
 
