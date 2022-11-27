@@ -4,8 +4,8 @@ public class Harbor extends Room {
 
     private long score;
 
-    public Harbor(String description) {
-        super(description);
+    public Harbor(String description,String whereToSailNext,String mapDirectory,int minXValue,int maxXValue, int minYValue, int maxYValue) {
+        super(description,whereToSailNext,mapDirectory,minXValue,maxXValue,minYValue,maxYValue);
         this.score = 0;
     }
 
