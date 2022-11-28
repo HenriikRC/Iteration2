@@ -193,7 +193,7 @@ public class Controller {
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
         group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
-        if(viewPlastic!=null){
+        if(viewPlastic!=null && !game.getIsCollected()){
             group.getChildren().add(viewPlastic);
         }
         Scene scene = new Scene(group);
