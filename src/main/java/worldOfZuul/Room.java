@@ -11,6 +11,31 @@ public class Room
     private HashMap<String, Room> exits;
     private Plastic currentPlastic;
     private DeadFish deadFishDeath;
+    private int minXValue;
+    private int maxXValue;
+    private int minYValue;
+    private int maxYValue;
+
+    public int getMaxXValue() {
+        return maxXValue;
+    }
+
+    public int getMaxYValue() {
+        return maxYValue;
+    }
+
+    public int getMinXValue() {
+        return minXValue;
+    }
+
+    public int getMinYValue() {
+        return minYValue;
+    }
+
+    private String mapDirectory;
+    public String getMapDirectory(){
+        return mapDirectory;
+    }
     public Room(){
         this.description = "Dette rum er tomt";
     }
@@ -19,10 +44,33 @@ public class Room
         this.description = description;
         exits = new HashMap<String, Room>();
     }
-    public Room(String description, String whereToSailNext)
+    public Room(String description, String whereToSailNext,String mapDirectory)
     {
         this.whereToSailNext = whereToSailNext;
         this.description = description;
+        this.mapDirectory = mapDirectory;
+        exits = new HashMap<String, Room>();
+    }
+    public Room(String description, String whereToSailNext,String mapDirectory,int minXValue, int maxXValue, int minYValue, int maxYValue)
+    {
+        this.whereToSailNext = whereToSailNext;
+        this.description = description;
+        this.mapDirectory = mapDirectory;
+        this.minXValue = minXValue;
+        this.maxXValue = maxXValue;
+        this.minYValue = minYValue;
+        this.maxYValue = maxYValue;
+        exits = new HashMap<String, Room>();
+    }
+    public Room(String description, String whereToSailNext,String mapDirectory,int minXValue, int maxXValue, int minYValue, int maxYValue,int exitXMin,int exitXMax)
+    {
+        this.whereToSailNext = whereToSailNext;
+        this.description = description;
+        this.mapDirectory = mapDirectory;
+        this.minXValue = minXValue;
+        this.maxXValue = maxXValue;
+        this.minYValue = minYValue;
+        this.maxYValue = maxYValue;
         exits = new HashMap<String, Room>();
     }
 

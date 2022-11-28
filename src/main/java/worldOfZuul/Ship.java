@@ -22,6 +22,9 @@ public class Ship {
     public int getCapacity(){
         return this.capacity;
     }
+    public int getCapacityMax(){
+        return this.capacityMax;
+    }
 
 
                                 /* Methods and Functions */

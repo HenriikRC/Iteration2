@@ -13,6 +13,12 @@ public class Game {
             Calendar.OCTOBER,0);
     private Room gameHarbor;
     private Ship skipperSkrald = new Ship();
+    private Room aboveHarbor;
+
+    public Room getAboveHarbor() {
+        return aboveHarbor;
+    }
+
     public Game() {                                     // Constructor for the game class
         createRooms();                                  // Creates the rooms in the game
         commands = new CommandWordsImplementation();
@@ -28,25 +34,25 @@ public class Game {
         Room Harbor;
 
         // 19 ocean rooms as objects of Room.
-        A1 = new Room("ude på havet", "øst");
-        A2 = new Room("ude på havet", "øst");
-        A3 = new Room("ude på havet", "syd");
-        A4 = new Room("ude på havet", "vest eller syd");
-        A5 = new Room("ude på havet", "vest eller syd");
-        B1 = new Room("ude på havet", "nord");
-        B3 = new Room("ude på havet", "syd");
-        B4 = new Room("ude på havet", "øst");
-        B5 = new Room("ude på havet", "øst");
-        C1 = new Room("ude på havet", "nord");
-        C3 = new Room("ude på havet", "syd");
-        D1 = new Room("ude på havet", "nord");
-        D3 = new Room("ude på havet", "syd");
-        D4 = new Room("ude på havet", "vest eller syd");
-        D5 = new Room("ude på havet", "vest eller syd");
-        E1 = new Room("ude på havet", "nord");
-        E3 = new Room("ude på havet", "syd");
-        E4 = new Room("ude på havet", "vest");
-        E5 = new Room("ude på havet", "vest");
+        A1 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A1.png",-274,384,-274,384);
+        A2 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A2.png",-384,384,-274,274);
+        A3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384);
+        A4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384);
+        A5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",-384,274,-274,384);
+        B1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384);
+        B3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",-274,384,-384,384);
+        B4 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B4-E4.png",-384,384,-384,274);
+        B5 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B5-E5.png",-384,274,-384,274);
+        C1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384);
+        C3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384);
+        D1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384);
+        D3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",-274,384,-384,384);
+        D4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384);
+        D5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",-384,274,-274,384);
+        E1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/E1.png",-274,274,-384,274);
+        E3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/E3.png",-274,384,-384,384);
+        E4 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B4-E4.png",-384,384,-384,274);
+        E5 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B5-E5.png",-384,274,-384,274);
 
         // 6 islands rooms created as objects of Room
         B2 = new Room("strandet på en ø");
@@ -57,7 +63,7 @@ public class Game {
         E2 = new Room("strandet på en ø");
 
         //Changed Object type from Room to Harbor
-        Harbor = new Harbor("nu i havnen");
+        Harbor = new Harbor("nu i havnen","Du er i havnen","file:src/main/resources/MapFiles/havn.png",-100,120,-384,150);
         gameHarbor = Harbor;
 
         // Room[] allOcean = {A1,A2,A3,A4,A5,B1,B3,B4,B5,C1,C3,D1,D3,D4,D5,E1,E3,E4,E5};
@@ -132,6 +138,7 @@ public class Game {
 
         // Current rooms starts with Harbor
         currentRoom = Harbor;
+        aboveHarbor = E3;
     }
 
 
@@ -153,6 +160,9 @@ public class Game {
     }
     public int getShipCapacity(){                           //Accesor method to return the current used capacity on the ship.
         return skipperSkrald.getCapacity();
+    }
+    public int getShipCapacityMax(){
+        return skipperSkrald.getCapacityMax();
     }
     public boolean getIsCollected(){                        //Accesor method for the is collected boolean
         return isCollected;
@@ -211,7 +221,7 @@ public class Game {
     }
 
     /** Carries the logic for the DISPOSE command */
-    public boolean dispose(Command command) {
+    public boolean dispose() {
         if (currentRoom.isHarbor()) {
             int score = skipperSkrald.disposePlastic();
             ((Harbor)currentRoom).setScore(score);
@@ -223,7 +233,7 @@ public class Game {
     }
 
     /** Carries the logic for the COLLECT command */
-    public void collect(Command command){
+    public void collect(){
         skipperSkrald.collectPlastic(currentRoom.getCurrentPlastic());
         isCollected = true;
         //System.out.println(skipperSkrald.getInventory());
@@ -258,4 +268,15 @@ public class Game {
                 + oneMonth.get(Calendar.YEAR)); // Prints current month
         gameDate = oneMonth.getTime();                                                    // Sets the gameDate to the new date
     }
+
+    public Room getCurrentRoom(){
+        return currentRoom;
+    }
+
+    public String getCurrentRoomMapDirectory(){
+        return currentRoom.getMapDirectory();
+    }
+
+
 }
+

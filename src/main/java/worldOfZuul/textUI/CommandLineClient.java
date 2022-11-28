@@ -118,7 +118,7 @@ public class CommandLineClient {
                 }
                 break;
             case DISPOSE:
-                if (game.dispose(command)) {
+                if (game.dispose()) {
                     System.out.println("Du har genbrugt " + game.getScore() + " tons plast");
                     if (game.getScore() >= 100000) {
                         quitMessage();
@@ -131,7 +131,7 @@ public class CommandLineClient {
                 break;
             case COLLECT:
                 if (!game.getIsCollected()){ //Checks if plastic already has been collected, if not
-                    game.collect(command);   // Plastic is collected
+                    game.collect();   // Plastic is collected
                 }
                 else {
                     System.out.println("Der er ikke noget plastik at indsamle");

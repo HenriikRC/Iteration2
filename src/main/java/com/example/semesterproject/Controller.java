@@ -1,39 +1,130 @@
 package com.example.semesterproject;
 
+
 import javafx.fxml.FXML;
-import javafx.scene.shape.Circle;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import worldOfZuul.*;
 
 
 public class Controller {
 
     @FXML
-    private Circle myCircle;
-    private double x;
-    private double y;
+    private Label dateLabel;
+    @FXML
+    private Label scoreLabel;
+    @FXML
+    private ImageView background;
+    @FXML
+    private ImageView ship;
+    private int x = 0;
+    private int y = 0;
+    private Game game;
+
+    public void setGame(Game game){
+        this.game = game;
+        dateLabel.setText(game.getGameDate());
+    }
 
     public void up() {
         //System.out.println("UP");
-        if (y >= -320) {
-            myCircle.setCenterY(y-=10);
+        if (y >= -290 && (game.getCurrentRoom()).getMinYValue()<y) {
+            ship.setRotate(0);
+            ship.setY(y-=10);
+        }
+        if (y <= -291){
+            game.goRoom(game.getCommand("sejl", "nord"));
+            move(this.x,290);
         }
     }
     public void down() {
         //System.out.println("DOWN");
-        if (y <= 320){
-            myCircle.setCenterY(y+=10);
+        if (y <= 290 && (game.getCurrentRoom()).getMaxYValue()>y){
+            ship.setRotate(180);
+            ship.setY(y+=10);
+        }
+        if (y >= 291 && game.getCurrentRoom()!=game.getAboveHarbor()){
+            ship.setRotate(180);
+            game.goRoom(game.getCommand("sejl", "syd"));
+            move(this.x,-290);
+        } else if (y>291 && -100<x && x<124){
+            ship.setRotate(180);
+            game.goRoom(game.getCommand("sejl", "syd"));
+            move(this.x,-290);
         }
     }
     public void left() {
         //System.out.println("LEFT");
-        if (x >= -320){
-            myCircle.setCenterX(x-=10);
+        if (x >= -290 && (game.getCurrentRoom()).getMinXValue()<x){
+            ship.setRotate(270);
+            ship.setX(x-=10);
+        }
+        if (x <=-291){
+            game.goRoom(game.getCommand("sejl","vest"));
+            move(290,this.y);
         }
     }
     public void right() {
         //System.out.println("RIGHT");
-        if (x <= 320){
-            myCircle.setCenterX(x+=10);
+        if (x <= 290 && (game.getCurrentRoom()).getMaxXValue()>x){
+            ship.setRotate(90);
+            ship.setX(x+=10);
+        }
+        if (x >= 291){
+            game.goRoom(game.getCommand("sejl","øst"));
+            move(-290,this.y);
         }
     }
+
+
+    public void handle(KeyEvent keyEvent) {
+        switch (keyEvent.getCode()) {
+            case UP -> up();
+            case DOWN -> down();
+            case RIGHT -> right();
+            case LEFT -> left();
+            case ENTER -> collect();
+            default -> {
+            }
+        }
+    }
+
+    public void move(int x, int y){
+        game.newMove();
+        background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
+        Group group = new Group();
+        group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
+        ship.setY(y);
+        this.y = y;
+        ship.setX(x);
+        this.x = x;
+        Scene scene = new Scene(group);
+        scene.setOnKeyPressed(this::handle);
+        (HelloApplication.getStage()).setScene(scene);
+        (HelloApplication.getStage()).show();
+        dateLabel.setText(game.getGameDate());
+        System.out.println(game.getRoomDescription());
+    }
+    public void collect() {
+        if(!game.isHarbor()){
+            game.collect();
+        } else{
+            game.dispose();
+            System.out.println(game.getScore());
+        }
+        updateScoreLabel();
+    }
+
+    public void updateScoreLabel(){
+        scoreLabel.setText(game.getShipCapacity() + " / " + game.getShipCapacityMax());
+    }
+
+
+
+
 
 }
