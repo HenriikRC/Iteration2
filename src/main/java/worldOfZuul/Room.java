@@ -12,6 +12,7 @@ public class Room
     private Plastic currentPlastic;
     private int amountPlastic;
     private DeadFish deadFishDeath;
+    private boolean isFishDead;
     private int minXValue;
     private int maxXValue;
     private int minYValue;
@@ -92,42 +93,31 @@ public class Room
         }
         return false;
     }
-    public Plastic getCurrentPlastic() {
-        return currentPlastic;
-    }
+    public Plastic getCurrentPlastic() {return currentPlastic;}
     public String getWhereToSailNext() {
-        return "Den hurtigste vej til havnen er: " + whereToSailNext + ", det tog lang tid at undersøge.";
-
-    }
+        return "Den hurtigste vej til havnen er: " + whereToSailNext + ", det tog lang tid at undersøge.";}
 
     public boolean spawnDeadFish(){
         DeadFish fish = new DeadFish();
-        boolean deadFish = fish.spawnChance();
-        if (deadFish){
+        if (fish.spawnChance()){
             fish.spawn();
-
+            this.deadFishDeath = fish;
+            this.isFishDead = true;
+            return true;
         }
-        this.deadFishDeath = fish;
-        return deadFish;
+        else{
+            this.deadFishDeath = null;
+            this.isFishDead = false;
+            return false;}
     }
 
-    public DeadFish getDeadFishDeath() {
-        return deadFishDeath;
-    }
-
-    public void setExit(String direction, Room neighbor)
-    {
-        exits.put(direction, neighbor);
-    }
-
-    public String getShortDescription()
-    {
-        return description;
-    }
+    public DeadFish getDeadFishDeath() {return deadFishDeath;}
+    public void setExit(String direction, Room neighbor) {exits.put(direction, neighbor);}
+    public String getShortDescription() {return description;}
 
     public String getLongDescription() {
         int plastic = this.amountPlastic;
-        boolean fish = spawnDeadFish();
+        boolean fish = this.isFishDead;
 //      Hvis man er på havnen
         if (checkRoom()) {
             return "Du er " + description + "\n" + getExitString(); }

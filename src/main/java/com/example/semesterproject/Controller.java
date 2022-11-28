@@ -100,20 +100,9 @@ public class Controller {
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
         group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
-        if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor())  {
-            Image plastic = new Image("file:src/main/resources/Icons/Button.png");
 
-            ImageView viewPlastic = new ImageView(plastic);
-
-            Random rng = new Random();
-            int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue(), game.getCurrentRoom().getMaxXValue());
-            int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue(), game.getCurrentRoom().getMaxYValue());
-            viewPlastic.setX(rngX);
-            viewPlastic.setY(rngY);
-
-            group.getChildren().add(viewPlastic);
-            System.out.println("Der er plastik");
-        }
+        if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor()) trashShow(group);
+        if(game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()){deadFishShow(group);}
 
         ship.setY(y);
         this.y = y;
@@ -127,6 +116,31 @@ public class Controller {
         dateLabel.setText(game.getGameDate());
         System.out.println(game.getRoomDescription());
     }
+
+    private void trashShow(Group group) {
+        Image plastic = new Image("file:src/main/resources/Sprites/skraldM.png");
+        ImageView viewPlastic = new ImageView(plastic);
+        Random rng = new Random();
+        int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue(), game.getCurrentRoom().getMaxXValue());
+        int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue(), game.getCurrentRoom().getMaxYValue());
+        viewPlastic.setX(rngX);
+        viewPlastic.setY(rngY);
+
+        group.getChildren().add(viewPlastic);
+        System.out.println("Der er plastik");
+    }
+
+    private void deadFishShow(Group group) {
+        Image fish = new Image("file:src/main/resources/Sprites/fish.png");
+        ImageView viewFish = new ImageView(fish);
+        Random rng = new Random();
+        int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue(), game.getCurrentRoom().getMaxXValue());
+        int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue(), game.getCurrentRoom().getMaxYValue());
+        viewFish.setX(rngX);
+        viewFish.setY(rngY);
+        group.getChildren().add(viewFish);
+    }
+
     public void collect() {
         if(!game.isHarbor()){
             game.collect();
