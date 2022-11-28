@@ -234,9 +234,10 @@ public class Game {
 
     /** Carries the logic for the COLLECT command */
     public void collect(){
-        skipperSkrald.collectPlastic(currentRoom.getCurrentPlastic());
-        isCollected = true;
-        //System.out.println(skipperSkrald.getInventory());
+        if (!isCollected && currentRoom.getCurrentPlastic().getAmount() > 0) {
+            skipperSkrald.collectPlastic(currentRoom.getCurrentPlastic());
+            isCollected = true;
+        }
     }
 
     /** Function to check if the gameDate is currently 2050 or the current move will make it so */
@@ -267,6 +268,7 @@ public class Game {
         System.out.println("Det er nu " + months[oneMonth.get(Calendar.MONTH)] + " i år "
                 + oneMonth.get(Calendar.YEAR)); // Prints current month
         gameDate = oneMonth.getTime();                                                    // Sets the gameDate to the new date
+        isCollected = false;
     }
 
     public Room getCurrentRoom(){

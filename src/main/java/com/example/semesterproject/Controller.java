@@ -100,7 +100,7 @@ public class Controller {
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
         group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
-        if (game.getCurrentRoom().spawnPlastic())  {
+        if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor())  {
             Image plastic = new Image("file:src/main/resources/Icons/Button.png");
 
             ImageView viewPlastic = new ImageView(plastic);
@@ -108,8 +108,8 @@ public class Controller {
             Random rng = new Random();
             int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue(), game.getCurrentRoom().getMaxXValue());
             int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue(), game.getCurrentRoom().getMaxYValue());
-            viewPlastic.setX(200);
-            viewPlastic.setY(200);
+            viewPlastic.setX(rngX);
+            viewPlastic.setY(rngY);
 
             group.getChildren().add(viewPlastic);
             System.out.println("Der er plastik");
@@ -122,6 +122,7 @@ public class Controller {
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
+        (HelloApplication.getStage()).setResizable(false);
         (HelloApplication.getStage()).show();
         dateLabel.setText(game.getGameDate());
         System.out.println(game.getRoomDescription());
