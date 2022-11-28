@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.semesterproject.Controller">
    <children>
-      <Label fx:id="dateLabel" layoutX="520.0" layoutY="14.0" prefHeight="95.0" prefWidth="234.0">
+      <Label fx:id="dateLabel" layoutX="519.0" layoutY="14.0" prefHeight="95.0" prefWidth="234.0">
          <font>
             <Font size="30.0" />
          </font></Label>
@@ -17,5 +17,10 @@
             <Image url="@../../../Misc/skib.png" />
          </image>
       </ImageView>
+      <Label fx:id="scoreLabel" layoutX="14.0" layoutY="14.0" prefHeight="95.0" prefWidth="234.0">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

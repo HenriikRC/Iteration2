@@ -16,6 +16,8 @@ public class Controller {
     @FXML
     private Label dateLabel;
     @FXML
+    private Label scoreLabel;
+    @FXML
     private ImageView background;
     @FXML
     private ImageView ship;
@@ -95,9 +97,7 @@ public class Controller {
         game.newMove();
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
-        group.getChildren().add(background);
-        group.getChildren().add(ship);
-        group.getChildren().add(dateLabel);
+        group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
         ship.setY(y);
         this.y = y;
         ship.setX(x);
@@ -116,6 +116,11 @@ public class Controller {
             game.dispose();
             System.out.println(game.getScore());
         }
+        updateScoreLabel();
+    }
+
+    public void updateScoreLabel(){
+        scoreLabel.setText(game.getShipCapacity() + " / " + game.getShipCapacityMax());
     }
 
 

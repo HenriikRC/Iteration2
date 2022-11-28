@@ -161,6 +161,9 @@ public class Game {
     public int getShipCapacity(){                           //Accesor method to return the current used capacity on the ship.
         return skipperSkrald.getCapacity();
     }
+    public int getShipCapacityMax(){
+        return skipperSkrald.getCapacityMax();
+    }
     public boolean getIsCollected(){                        //Accesor method for the is collected boolean
         return isCollected;
     }

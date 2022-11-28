@@ -26,13 +26,12 @@ public class HelloApplication extends Application {
         Image bg = new Image("file:src/main/resources/MapFiles/havn.png");
         ImageView mv = new ImageView(bg);
         mv.setId("background");
-
         //Image shipImage = new Image("file:src/main/resources/Misc/skib.png");
         //ImageView ship = new ImageView(shipImage);
         //ship.setY(284);
         //ship.setX(320);
         //controller.setImageView(ship);
-
+        controller.updateScoreLabel();
         Group group = new Group();
         group.getChildren().add(mv);
         group.getChildren().add(root);
@@ -48,24 +47,14 @@ public class HelloApplication extends Application {
         sc.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                switch (keyEvent.getCode()){
-                    case UP:
-                        controller.up();
-                        break;
-                    case DOWN:
-                        controller.down();
-                        break;
-                    case RIGHT:
-                        controller.right();
-                        break;
-                    case LEFT:
-                        controller.left();
-                        break;
-                    case ENTER:
-                        controller.collect();
-                        break;
-                    default:
-                        break;
+                switch (keyEvent.getCode()) {
+                    case UP -> controller.up();
+                    case DOWN -> controller.down();
+                    case RIGHT -> controller.right();
+                    case LEFT -> controller.left();
+                    case ENTER -> controller.collect();
+                    default -> {
+                    }
                 }
             }
         });
