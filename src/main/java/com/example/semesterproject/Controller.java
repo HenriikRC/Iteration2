@@ -177,7 +177,7 @@ public class Controller {
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
         group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
-        if(viewFish!=null){
+        if(viewFish!=null && !game.getDeadFishInteracted()){
             group.getChildren().add(viewFish);
         }
         Scene scene = new Scene(group);

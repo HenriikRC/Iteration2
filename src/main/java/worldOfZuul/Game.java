@@ -19,6 +19,9 @@ public class Game {
     public Room getAboveHarbor() {
         return aboveHarbor;
     }
+    public boolean isDeadFishInteracted(){
+        return deadFishInteracted;
+    }
 
     public Game() {                                     // Constructor for the game class
         createRooms();                                  // Creates the rooms in the game
