@@ -23,6 +23,14 @@ public class Controller {
     private ImageView background;
     @FXML
     private ImageView ship;
+    @FXML
+    private ImageView arrowUp;
+    @FXML
+    private ImageView arrowDown;
+    @FXML
+    private ImageView arrowRight;
+    @FXML
+    private ImageView arrowLeft;
     private ImageView viewPlastic;
     private int x = 0;
     private int y = 0;
@@ -101,7 +109,7 @@ public class Controller {
         game.newMove();
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
-        group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
+        group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
         if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor())  {
             trashShow(group);
         }
@@ -167,7 +175,7 @@ public class Controller {
     public void removePlasticUI(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
-        group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
+        group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
@@ -180,7 +188,7 @@ public class Controller {
     public void removeDeadFishUI(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
-        group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
+        group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
         if(viewPlastic!=null){
             group.getChildren().add(viewPlastic);
         }
