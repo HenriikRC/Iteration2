@@ -4,6 +4,7 @@ import java.util.Random;
 public class Plastic implements Spawnable{
 
     private int amount;
+    private boolean spawnChanceBoolean;
 
                         /* Constructor, Accesor and Mutator Methods */
     //Constructor for Plastic objects
@@ -18,6 +19,12 @@ public class Plastic implements Spawnable{
     public int getAmount() {
         return amount;
     }
+    public void setSpawnChance(boolean bool){
+        spawnChanceBoolean = bool;
+    }
+    public boolean getSpawnChance(){
+        return spawnChanceBoolean;
+    }
 
 
                                 /* Methods and Functions */
@@ -27,9 +34,13 @@ public class Plastic implements Spawnable{
         Random random = new Random();
         int chance = random.nextInt(101);
         if(chance<65){
+            spawnChanceBoolean = true;
             return true;
         }
-        else return false;
+        else {
+            spawnChanceBoolean = false;
+            return false;
+        }
     }
 
     /** Creates a random amount of plastic for the Plastic object */

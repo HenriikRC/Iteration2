@@ -9,6 +9,7 @@ public class Game {
     private Room currentRoom;                           // Points towards the current room object.
     private CommandWords commands;
     private boolean isCollected;                        // True if plastic in current room has been collected once.
+    private boolean deadFishInteracted = false;
     private Date gameDate = new Date(122,          // Sets the date for the start of the game to October 2022.
             Calendar.OCTOBER,0);
     private Room gameHarbor;
@@ -143,8 +144,12 @@ public class Game {
 
 
                                         /* Accesor Methods */
-    public void getDeathReason(Command command) {           //Accesor method for deathreason of a DeadFish object
+    public boolean getDeadFishInteracted(){
+        return deadFishInteracted;
+    }
+    public void getDeathReason() {           //Accesor method for deathreason of a DeadFish object
         System.out.println(currentRoom.getDeadFishDeath());
+        deadFishInteracted = true;
     }
     public String getRoomDescription() {                    //Accesor method for the description of a room
         return currentRoom.getLongDescription();
@@ -237,6 +242,7 @@ public class Game {
         if (!isCollected && currentRoom.getCurrentPlastic().getAmount() > 0) {
             skipperSkrald.collectPlastic(currentRoom.getCurrentPlastic());
             isCollected = true;
+            currentRoom.getCurrentPlastic().setSpawnChance(false);
         }
     }
 
@@ -269,6 +275,7 @@ public class Game {
                 + oneMonth.get(Calendar.YEAR)); // Prints current month
         gameDate = oneMonth.getTime();                                                    // Sets the gameDate to the new date
         isCollected = false;
+        deadFishInteracted = false;
     }
 
     public Room getCurrentRoom(){

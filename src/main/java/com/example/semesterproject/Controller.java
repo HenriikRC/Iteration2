@@ -23,6 +23,7 @@ public class Controller {
     private ImageView background;
     @FXML
     private ImageView ship;
+    private ImageView viewPlastic;
     private int x = 0;
     private int y = 0;
     private Game game;
@@ -90,6 +91,7 @@ public class Controller {
             case RIGHT -> right();
             case LEFT -> left();
             case ENTER -> collect();
+            case SPACE -> interactWithDeadFish();
             default -> {
             }
         }
@@ -100,10 +102,12 @@ public class Controller {
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
         group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
-
-        if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor()) trashShow(group);
-        if(game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()){deadFishShow(group);}
-
+        if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor())  {
+            trashShow(group);
+        }
+        if(game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()){
+            deadFishShow(group);
+        }
         ship.setY(y);
         this.y = y;
         ship.setX(x);
@@ -118,24 +122,31 @@ public class Controller {
     }
 
     private void trashShow(Group group) {
-        Image plastic = new Image("file:src/main/resources/Sprites/skraldM.png");
-        ImageView viewPlastic = new ImageView(plastic);
+        Image plastic;
+        if(game.getCurrentRoom().getCurrentPlastic().getAmount()<400){
+            plastic = new Image("file:src/main/resources/Sprites/skraldS.png");
+        }
+        else if (game.getCurrentRoom().getCurrentPlastic().getAmount()<900){
+            plastic = new Image("file:src/main/resources/Sprites/skraldM.png");
+        } else {
+            plastic = new Image("file:src/main/resources/Sprites/skraldL.png");
+        }
+        viewPlastic = new ImageView(plastic);
         Random rng = new Random();
-        int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue(), game.getCurrentRoom().getMaxXValue());
-        int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue(), game.getCurrentRoom().getMaxYValue());
-        viewPlastic.setX(rngX);
-        viewPlastic.setY(rngY);
+        int rngX = rng.nextInt(0, 540);
+        int rngY = rng.nextInt(0, 540);
+        viewPlastic.setLayoutX(rngX);
+        viewPlastic.setLayoutX(rngY);
 
         group.getChildren().add(viewPlastic);
-        System.out.println("Der er plastik");
     }
 
     private void deadFishShow(Group group) {
         Image fish = new Image("file:src/main/resources/Sprites/fish.png");
         ImageView viewFish = new ImageView(fish);
         Random rng = new Random();
-        int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue(), game.getCurrentRoom().getMaxXValue());
-        int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue(), game.getCurrentRoom().getMaxYValue());
+        int rngX = rng.nextInt(200,201);
+        int rngY = rng.nextInt(200,201);
         viewFish.setX(rngX);
         viewFish.setY(rngY);
         group.getChildren().add(viewFish);
@@ -144,6 +155,8 @@ public class Controller {
     public void collect() {
         if(!game.isHarbor()){
             game.collect();
+            removePlasticUI();
+
         } else{
             game.dispose();
             System.out.println(game.getScore());
@@ -151,10 +164,44 @@ public class Controller {
         updateScoreLabel();
     }
 
-    public void updateScoreLabel(){
-        scoreLabel.setText(game.getShipCapacity() + " / " + game.getShipCapacityMax());
+    public void removePlasticUI(){
+        background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
+        Group group = new Group();
+        group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
+        Scene scene = new Scene(group);
+        scene.setOnKeyPressed(this::handle);
+        (HelloApplication.getStage()).setScene(scene);
+        (HelloApplication.getStage()).setResizable(false);
+        (HelloApplication.getStage()).show();
+        dateLabel.setText(game.getGameDate());
+        viewPlastic = null;
     }
 
+    public void removeDeadFishUI(){
+        background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
+        Group group = new Group();
+        group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
+        if(viewPlastic!=null){
+            group.getChildren().add(viewPlastic);
+        }
+        Scene scene = new Scene(group);
+        scene.setOnKeyPressed(this::handle);
+        (HelloApplication.getStage()).setScene(scene);
+        (HelloApplication.getStage()).setResizable(false);
+        (HelloApplication.getStage()).show();
+        dateLabel.setText(game.getGameDate());
+    }
+
+    public void updateScoreLabel(){
+        scoreLabel.setText(game.getShipCapacity() + " / " + game.getShipCapacityMax() + " tons");
+    }
+
+    public void interactWithDeadFish(){
+        if(!game.getDeadFishInteracted()){
+            game.getDeathReason();
+            removeDeadFishUI();
+        }
+    }
 
 
 

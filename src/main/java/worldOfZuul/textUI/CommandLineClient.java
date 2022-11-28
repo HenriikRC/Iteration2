@@ -137,7 +137,7 @@ public class CommandLineClient {
                     System.out.println("Der er ikke noget plastik at indsamle");
                 } break;
             case INFO:
-                game.getDeathReason(command);
+                game.getDeathReason();
                 break;
             case COMPASS:
                 if (!game.isHarbor()){ //If not in harbor, gives a hint on how to reach the harbor in the shortest manner.
