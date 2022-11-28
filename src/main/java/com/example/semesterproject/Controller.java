@@ -10,6 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import worldOfZuul.*;
 
+import java.util.Random;
+
 
 public class Controller {
 
@@ -98,6 +100,21 @@ public class Controller {
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
         group.getChildren().addAll(background,ship,dateLabel,scoreLabel);
+        if (game.getCurrentRoom().spawnPlastic())  {
+            Image plastic = new Image("file:src/main/resources/Icons/Button.png");
+
+            ImageView viewPlastic = new ImageView(plastic);
+
+            Random rng = new Random();
+            int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue(), game.getCurrentRoom().getMaxXValue());
+            int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue(), game.getCurrentRoom().getMaxYValue());
+            viewPlastic.setX(200);
+            viewPlastic.setY(200);
+
+            group.getChildren().add(viewPlastic);
+            System.out.println("Der er plastik");
+        }
+
         ship.setY(y);
         this.y = y;
         ship.setX(x);

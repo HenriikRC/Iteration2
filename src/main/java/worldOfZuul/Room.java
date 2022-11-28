@@ -10,6 +10,7 @@ public class Room
     private String whereToSailNext;
     private HashMap<String, Room> exits;
     private Plastic currentPlastic;
+    private int amountPlastic;
     private DeadFish deadFishDeath;
     private int minXValue;
     private int maxXValue;
@@ -74,19 +75,22 @@ public class Room
         exits = new HashMap<String, Room>();
     }
 
-    public int spawnPlastic(){
+    boolean spawned;
+    public boolean spawnPlastic(){
 //      Metode der laver plastik objekt, kører spawnchance og herefter gemmer tilfældig mængde i "currentPlastic" og retunere "amount".
         Plastic plastic = new Plastic();
-        int amount = 0;
         if(plastic.spawnChance() == true){
             plastic.spawn();
-            amount = plastic.getAmount();
+            this.amountPlastic = plastic.getAmount();
+            this.currentPlastic = plastic;
+            return true;
         }
         else if (plastic.spawnChance() == false){
-            amount = 0;
+            this.amountPlastic = 0;
+            this.currentPlastic = null;
+            return false;
         }
-        this.currentPlastic = plastic;
-        return (amount);
+        return false;
     }
     public Plastic getCurrentPlastic() {
         return currentPlastic;
@@ -122,24 +126,24 @@ public class Room
     }
 
     public String getLongDescription() {
-        int plastic = spawnPlastic();
+        int plastic = this.amountPlastic;
         boolean fish = spawnDeadFish();
 //      Hvis man er på havnen
         if (checkRoom()) {
             return "Du er " + description + "\n" + getExitString(); }
 //        Hvis der er hverken fisk eller plast
-        else if(plastic<100 && !fish){
+        else if(plastic <= 0 && !fish){
             return "Du er " + description + ". Der er intet andet end vand" +"\n" + getExitString();}
 //        Hvis der er fisk men ikke plast
-        else if (plastic<100 && fish) {
+        else if (plastic <= 0 && fish) {
             return "Du er " + description + ". Der er en død fisk. For at undersøge skriv >info< "
                     +"\n" + getExitString();}
 //        Hvis der er fisk og plast
-        else if (plastic>0 && fish) {
+        else if (plastic > 0 && fish) {
             return "Du er " + description + ". Der er en død fisk. For at undersøge skriv >info<"
                     +"\n" +"Der er " +plastic+ " tons plastik i vandet. >indsaml< "+"\n" + getExitString();}
 //        Hvis der ikke er fisk men der er plastik
-        else if (plastic>0 && !fish) {
+        else if (plastic > 0 && !fish) {
             return "Du er " + description + ". Der er " +plastic+ " tons plastik i vandet. >indsaml< "
                     +"\n" + getExitString();}
 
