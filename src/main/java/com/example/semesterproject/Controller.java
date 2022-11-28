@@ -32,6 +32,7 @@ public class Controller {
     @FXML
     private ImageView arrowLeft;
     private ImageView viewPlastic;
+    private ImageView viewFish;
     private int x = 0;
     private int y = 0;
     private Game game;
@@ -151,7 +152,7 @@ public class Controller {
 
     private void deadFishShow(Group group) {
         Image fish = new Image("file:src/main/resources/Sprites/fish.png");
-        ImageView viewFish = new ImageView(fish);
+        viewFish = new ImageView(fish);
         Random rng = new Random();
         int rngX = rng.nextInt(200,201);
         int rngY = rng.nextInt(200,201);
@@ -176,6 +177,9 @@ public class Controller {
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
         group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
+        if(viewFish!=null){
+            group.getChildren().add(viewFish);
+        }
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
