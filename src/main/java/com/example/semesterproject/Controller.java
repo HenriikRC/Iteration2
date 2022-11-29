@@ -98,7 +98,6 @@ public class Controller {
             case LEFT -> left();
             case ENTER -> collect();
             case SPACE -> interact();
-            case I -> deadFishInfoRemove(infoLabel,infoBox);
             default -> {
             }
         }
