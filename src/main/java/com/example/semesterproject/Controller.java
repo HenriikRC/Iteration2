@@ -22,7 +22,7 @@ import java.util.Random;
 public class Controller {
 
     @FXML
-    private Label dateLabel, scoreLabel;
+    private Label dateLabel, scoreLabel, infoLabel;
     @FXML
     private ImageView background, ship, minimap, viewPlastic, viewFish, infoBox;
     private int x = 0, y = 0;
@@ -199,7 +199,7 @@ public class Controller {
         if(viewPlastic!=null && !game.getIsCollected()){
             group.getChildren().add(viewPlastic);
         }
-        deadFishInfoBox(group);
+        deadFishInfoBoxShow(group);
         group.getChildren().addAll(dateLabel,scoreLabel,minimap);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
@@ -220,15 +220,27 @@ public class Controller {
             removeDeadFishUI();
         }
     }
-    public void deadFishInfoBox(Group group){
-    Label label = new Label();
-    label.setText(game.getCurrentRoom().getDeadFishDeath().getDeathReason());
-    label.setLayoutY(0);
-    label.setLayoutX(0);
+    public void deadFishInfoBoxShow(Group group){
+        Image info = new Image("file:src/main/resources/Sprites/dialogbox.png");
+        infoBox = new ImageView(info);
+        infoBox.setX(0);
+        infoBox.setY(0);
+        infoLabel = new Label();
+        infoLabel.setText(game.getCurrentRoom().getDeadFishDeath().getDeathReason());
+        infoLabel.setLayoutY(0);
+        infoLabel.setLayoutX(0);
 
-    label.setFont(new Font("System Bold", 22));
-    group.getChildren().add(label);
-
+        infoLabel.setFont(new Font("System Bold", 22));
+        group.getChildren().addAll(infoBox,infoLabel);
+    }
+    public void deadFishInfoRemove(Group group, Label label, ImageView im){
+        group.getChildren().removeAll(label,im);
+        Scene scene = new Scene(group);
+        scene.setOnKeyPressed(this::handle);
+        (HelloApplication.getStage()).setScene(scene);
+        (HelloApplication.getStage()).setResizable(false);
+        (HelloApplication.getStage()).show();
+//        dateLabel.setText(game.getGameDateMessage());
     }
 
     public boolean checkFishPlacement(){
