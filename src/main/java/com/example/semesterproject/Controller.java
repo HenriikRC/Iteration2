@@ -16,6 +16,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import worldOfZuul.*;
 
@@ -294,7 +295,7 @@ public class Controller {
     }
 
     public void quit(){
-        background = new ImageView(new Image("file:src/main/resources/MapFiles/E3.png"));
+        background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
         if(game.isIt2050()){
             ImageView skipperSkrald = new ImageView(new Image("file:src/main/resources/Sprites/Skipper Skrald1.png"));
@@ -303,20 +304,42 @@ public class Controller {
             skipperSkrald.resize(200,200);
             ship.setX(0);
             ship.setY(0);
-            ImageView trash1 = new ImageView(new Image("file:src/main/resources/Sprites/skraldL.png"));
-            trash1.setX(100);
-            trash1.setY(200);
-            Path path1 = new Path();
-            CubicCurveTo cubicCurveTo = new CubicCurveTo(100,-400,175,250,100,100);
-            path1.getElements().add(new MoveTo(100,100));
-            path1.getElements().add(cubicCurveTo);
-            PathTransition pathTransition1 = new PathTransition();
-            pathTransition1.setDuration(Duration.millis(4000));
-            pathTransition1.setNode(trash1);
-            pathTransition1.setPath(path1);
-            pathTransition1.setCycleCount(1);
-            pathTransition1.setAutoReverse(false);
-            pathTransition1.play();
+            ImageView trash1 = new ImageView();
+            ImageView trash2 = new ImageView();
+            ImageView trash3 = new ImageView();
+            ImageView trash4 = new ImageView();
+            ImageView trash5 = new ImageView();
+            ImageView trash6 = new ImageView();
+            ImageView trash7 = new ImageView();
+            ImageView trash8 = new ImageView();
+            ImageView trash9 = new ImageView();
+            ImageView trash10 = new ImageView();
+            ImageView fish1 = new ImageView();
+            ImageView fish2 = new ImageView();
+            ImageView fish3 = new ImageView();
+            ImageView fish4 = new ImageView();
+            ImageView fish5 = new ImageView();
+            ImageView fish6 = new ImageView();
+            ImageView fish7 = new ImageView();
+
+            Animate(trash1,"skraldL",200,300);
+            Animate(trash2,"skraldM",150,150);
+            Animate(trash3,"skraldL",600,500);
+            Animate(trash4,"skraldS",210,700);
+            Animate(trash5,"skraldS",585,100);
+            Animate(trash6,"skraldM",500,400);
+            Animate(trash7,"skraldS",0,100);
+            Animate(trash8,"skraldL",650,700);
+            Animate(trash9,"skraldL",25,600);
+            Animate(trash10,"skraldL",200,250);
+            Animate(fish1,"fish",475,300);
+            Animate(fish2,"fish",250,190);
+            Animate(fish3,"fish",225,600);
+            Animate(fish4,"fish",575,499);
+            Animate(fish5,"fish",150,380);
+            Animate(fish6,"fish",75,100);
+            Animate(fish7,"fish",700,700);
+
             Label text1 = new Label();
             text1.setText("Du nåede desværre ikke at indsamle 100.000 tons plastik inden år 2050");
             text1.setLayoutX(19);
@@ -327,20 +350,47 @@ public class Controller {
             text2.setFont(new Font("System Bold",22));
             text2.setLayoutX(174);
             text2.setLayoutY(55);
+            text2.setTextAlignment(TextAlignment.CENTER);
             Label text3 = new Label();
             text3.setText("Og alle fisk i vandet er døde");
             text3.setLayoutX(227);
             text3.setLayoutY(87);
             text3.setFont(new Font("System Bold",22));
-            group.getChildren().addAll(background,ship,skipperSkrald,text1,text2,text3,trash1);
+            Label text4 = new Label();
+            text4.setText("Du nåede at indsamle " + game.getScore() + " tons plast");
+            text4.setLayoutX(187);
+            text4.setLayoutY(637);
+            text4.setFont(new Font("System Bold", 22));
+            group.getChildren().addAll(background,ship,skipperSkrald,text1,text2,text3,text4);
+            group.getChildren().addAll(trash1,trash2,trash3,trash4,trash5,trash6,trash7,trash8,trash9,trash10);
+            group.getChildren().addAll(fish1,fish2,fish3,fish4,fish5,fish6,fish7);
             Scene scene = new Scene(group);
             (HelloApplication.getStage()).setScene(scene);
             (HelloApplication.getStage()).show();
 
-            System.out.println("Hej");
-
         } else if (game.getScore() >= 100_000) {
 
         }
+    }
+
+    public void Animate(ImageView image, String source, int x, int y){
+        image.setImage(new Image("file:src/main/resources/Sprites/"+source+".png"));
+        generateAnimation(image, x, y);
+    }
+
+    private static void generateAnimation(ImageView trashImage, int x, int y) {
+        Path path1 = new Path();
+        trashImage.setX(-x);
+        trashImage.setY(-y);
+        CubicCurveTo cubicCurveTo = new CubicCurveTo(0,0,-200,-100, x, y);
+        path1.getElements().add(new MoveTo(368,-y));
+        path1.getElements().add(cubicCurveTo);
+        PathTransition pathTransition1 = new PathTransition();
+        pathTransition1.setDuration(Duration.millis(4000));
+        pathTransition1.setNode(trashImage);
+        pathTransition1.setPath(path1);
+        pathTransition1.setCycleCount(1);
+        pathTransition1.setAutoReverse(false);
+        pathTransition1.play();
     }
 }
