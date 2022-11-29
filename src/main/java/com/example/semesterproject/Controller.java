@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import worldOfZuul.*;
-
 import java.util.Random;
 
 
@@ -39,7 +38,7 @@ public class Controller {
 
     public void setGame(Game game){
         this.game = game;
-        dateLabel.setText(game.getGameDate());
+        dateLabel.setText(game.getGameDateMessage());
     }
 
     public void up() {
@@ -100,7 +99,7 @@ public class Controller {
             case RIGHT -> right();
             case LEFT -> left();
             case ENTER -> collect();
-            case SPACE -> interactWithDeadFish();
+            case SPACE -> interact();
             default -> {
             }
         }
@@ -108,26 +107,32 @@ public class Controller {
 
     public void move(int x, int y){
         game.newMove();
-        background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
-        Group group = new Group();
-        group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
-        if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor())  {
-            trashShow(group);
+        if(game.isIt2050()){
+            quit();
+        } else {
+            viewFish = null;
+            viewPlastic = null;
+            background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
+            Group group = new Group();
+            group.getChildren().addAll(background, ship, dateLabel, scoreLabel, arrowUp, arrowDown, arrowRight, arrowLeft);
+            if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor()) {
+                trashShow(group);
+            }
+            if (game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()) {
+                deadFishShow(group);
+            }
+            ship.setY(y);
+            this.y = y;
+            ship.setX(x);
+            this.x = x;
+            Scene scene = new Scene(group);
+            scene.setOnKeyPressed(this::handle);
+            (HelloApplication.getStage()).setScene(scene);
+            (HelloApplication.getStage()).setResizable(false);
+            (HelloApplication.getStage()).show();
+            dateLabel.setText(game.getGameDateMessage());
+            System.out.println(game.getRoomDescription());
         }
-        if(game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()){
-            deadFishShow(group);
-        }
-        ship.setY(y);
-        this.y = y;
-        ship.setX(x);
-        this.x = x;
-        Scene scene = new Scene(group);
-        scene.setOnKeyPressed(this::handle);
-        (HelloApplication.getStage()).setScene(scene);
-        (HelloApplication.getStage()).setResizable(false);
-        (HelloApplication.getStage()).show();
-        dateLabel.setText(game.getGameDate());
-        System.out.println(game.getRoomDescription());
     }
 
     private void trashShow(Group group) {
@@ -142,31 +147,36 @@ public class Controller {
         }
         viewPlastic = new ImageView(plastic);
         Random rng = new Random();
-        int rngX = rng.nextInt(0, 540);
-        int rngY = rng.nextInt(0, 540);
+        int rngX = rng.nextInt(0,((game.getCurrentRoom().getMaxXValue()*2)-64));
+        int rngY = rng.nextInt(0,((game.getCurrentRoom().getMaxYValue()*2)-64));
         viewPlastic.setLayoutX(rngX);
         viewPlastic.setLayoutX(rngY);
-
         group.getChildren().add(viewPlastic);
     }
 
     private void deadFishShow(Group group) {
         Image fish = new Image("file:src/main/resources/Sprites/fish.png");
         viewFish = new ImageView(fish);
+        viewFish.resize(64,64);
         Random rng = new Random();
-        int rngX = rng.nextInt(200,201);
-        int rngY = rng.nextInt(200,201);
+        int rngX = rng.nextInt(48,((game.getCurrentRoom().getMaxXValue()*2)-64));
+        int rngY = rng.nextInt(48,((game.getCurrentRoom().getMaxYValue()*2)-64));
         viewFish.setX(rngX);
         viewFish.setY(rngY);
         group.getChildren().add(viewFish);
     }
 
     public void collect() {
-        if(!game.isHarbor()){
-            game.collect();
-            removePlasticUI();
+        if(!game.isHarbor() && checkPlasticPlacement()){
+            if(game.collect()){
+                removePlasticUI();
+                if(game.getScore() == 100_000){
+                    quit();
+                }
+            }
 
-        } else{
+
+        } else if (game.isIt2050()){
             game.dispose();
             System.out.println(game.getScore());
         }
@@ -185,7 +195,7 @@ public class Controller {
         (HelloApplication.getStage()).setScene(scene);
         (HelloApplication.getStage()).setResizable(false);
         (HelloApplication.getStage()).show();
-        dateLabel.setText(game.getGameDate());
+        dateLabel.setText(game.getGameDateMessage());
         viewPlastic = null;
     }
 
@@ -201,7 +211,7 @@ public class Controller {
         (HelloApplication.getStage()).setScene(scene);
         (HelloApplication.getStage()).setResizable(false);
         (HelloApplication.getStage()).show();
-        dateLabel.setText(game.getGameDate());
+        dateLabel.setText(game.getGameDateMessage());
     }
 
     public void updateScoreLabel(){
@@ -209,12 +219,41 @@ public class Controller {
     }
 
     public void interactWithDeadFish(){
-        if(!game.getDeadFishInteracted()){
+        if(!game.getDeadFishInteracted() && viewFish!=null && checkFishPlacement()){
             game.getDeathReason();
             removeDeadFishUI();
         }
     }
 
+    public boolean checkFishPlacement(){
+        if(ship.getBoundsInParent().intersects(viewFish.getBoundsInParent())){
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean checkPlasticPlacement() {
+        if (ship.getBoundsInParent().intersects(viewPlastic.getBoundsInParent())) {
+            return true;
+        } else return false;
+    }
+
+    public void upgradeShip(){
+        game.upgradeShip();
+    }
+
+    public void interact(){
+        if(!game.isHarbor()){
+            interactWithDeadFish();
+        } else {
+            upgradeShip();
+            updateScoreLabel();
+        }
+    }
+
+    public void quit(){
+
+    }
 
 
 

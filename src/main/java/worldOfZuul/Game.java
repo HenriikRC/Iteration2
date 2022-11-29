@@ -22,6 +22,18 @@ public class Game {
     public boolean isDeadFishInteracted(){
         return deadFishInteracted;
     }
+    public void upgradeShip() {
+
+        if (getScore() > 48_000) {
+            skipperSkrald.setCapacityMax(14_000);
+        } else if (getScore() > 24_000) {
+            skipperSkrald.setCapacityMax(12_000);
+        } else if (getScore() > 14_000) {
+            skipperSkrald.setCapacityMax(10_000);
+        } else if (getScore() > 6_000) {
+            skipperSkrald.setCapacityMax(8_000);
+        }
+    }
 
     public Game() {                                     // Constructor for the game class
         createRooms();                                  // Creates the rooms in the game
@@ -105,7 +117,7 @@ public class Game {
         B4.setExit("øst",B5);
 
         B5.setExit("nord",A5);
-        B5.setExit("øst",B4);
+        B5.setExit("vest",B4);
 
         C1.setExit("nord",B1);
         C1.setExit("syd",D1);
@@ -241,12 +253,13 @@ public class Game {
     }
 
     /** Carries the logic for the COLLECT command */
-    public void collect(){
-        if (!isCollected && currentRoom.getCurrentPlastic().getAmount() > 0) {
+    public boolean collect(){
+        if (!isCollected && currentRoom.getCurrentPlastic().getAmount() < (skipperSkrald.getCapacityMax()- skipperSkrald.getCapacity())) {
             skipperSkrald.collectPlastic(currentRoom.getCurrentPlastic());
             isCollected = true;
             currentRoom.getCurrentPlastic().setSpawnChance(false);
-        }
+            return true;
+        } else return false;
     }
 
     /** Function to check if the gameDate is currently 2050 or the current move will make it so */
@@ -257,7 +270,10 @@ public class Game {
     }
 
     /** Calculates and increments the date of the game */
-    public String getGameDate(){
+    public Date getGameDate(){
+        return gameDate;
+    }
+    public String getGameDateMessage(){
         String[] months = {"januar", "februar", "marts", "april", "maj", "juni", "juli",  // String array of all the months
                 "august", "september", "oktober", "november", "december"};
         Calendar oneMonth = Calendar.getInstance();                                       // Making calender object oneMonth

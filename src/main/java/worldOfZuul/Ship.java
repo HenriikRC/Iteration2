@@ -26,6 +26,10 @@ public class Ship {
         return this.capacityMax;
     }
 
+    public void setCapacityMax(int capacityMax){
+        this.capacityMax = capacityMax;
+    }
+
 
                                 /* Methods and Functions */
     public ArrayList<Spawnable> getInventory() {

@@ -75,7 +75,7 @@ public class CommandLineClient {
     private void quitMessage(){
         if (game.getScore() >= 100000) {
             System.out.println("Tillykke!! Du fik reddet verdenshavet, du fik det allerede løst i "
-                    + game.getGameDate());
+                    + game.getGameDateMessage());
         }
         else if (game.isIt2050()){
             System.out.println("Desværre, kalenderen siger 2050 og du har tabt spillet. Du fik kun fjernet "
