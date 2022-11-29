@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.semesterproject.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.semesterproject.Controller">
    <children>
-      <Label fx:id="dateLabel" layoutX="519.0" layoutY="14.0" prefHeight="95.0" prefWidth="234.0">
+      <Label fx:id="dateLabel" alignment="CENTER_RIGHT" layoutX="531.0" layoutY="14.0" prefHeight="30.0" prefWidth="234.0">
          <font>
-            <Font size="30.0" />
+            <Font name="System Bold" size="30.0" />
          </font></Label>
       <ImageView fx:id="ship" fitHeight="200.0" fitWidth="120.0" layoutX="324.0" layoutY="290.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../Misc/skib.png" />
          </image>
       </ImageView>
-      <Label fx:id="scoreLabel" layoutX="14.0" layoutY="14.0" prefHeight="95.0" prefWidth="234.0">
+      <Label fx:id="scoreLabel" alignment="CENTER_RIGHT" layoutX="531.0" layoutY="60.0" prefHeight="30.0" prefWidth="234.0">
          <font>
-            <Font size="30.0" />
+            <Font name="System Bold" size="30.0" />
          </font>
       </Label>
       <ImageView fx:id="arrowUp" fitHeight="64.0" fitWidth="64.0" layoutX="604.0" layoutY="602.0" onMouseClicked="#up" pickOnBounds="true" preserveRatio="true">
@@ -40,6 +39,11 @@
       <ImageView fx:id="arrowRight" fitHeight="64.0" fitWidth="64.0" layoutX="678.0" layoutY="676.0" onMouseClicked="#right" pickOnBounds="true" preserveRatio="true" rotate="90.0">
          <image>
             <Image url="@../../../Icons/arrow.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="minimap" fitHeight="100.0" fitWidth="100.0" layoutX="15.0" layoutY="653.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Icons/minimap.png" />
          </image>
       </ImageView>
    </children>

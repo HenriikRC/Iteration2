@@ -270,12 +270,15 @@ public class Game {
     }
 
     /** Calculates and increments the date of the game */
+    public String getGameDate(){
+        String[] months = {"Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli",  // String array of all the months
+                "August", "September", "Oktober", "November", "December"};
     public Date getGameDate(){
         return gameDate;
     }
     public String getGameDateMessage(){
-        String[] months = {"januar", "februar", "marts", "april", "maj", "juni", "juli",  // String array of all the months
-                "august", "september", "oktober", "november", "december"};
+        String[] months = {"Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli",  // String array of all the months
+                "August", "September", "Oktober", "November", "December"};
         Calendar oneMonth = Calendar.getInstance();                                       // Making calender object oneMonth
         oneMonth.setTime(gameDate);                                                       // Setting time of the object to current gameDate
         oneMonth.add(Calendar.MONTH,+1);                                           // Increments with one month
