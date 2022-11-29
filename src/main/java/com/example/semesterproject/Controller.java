@@ -20,7 +20,7 @@ public class Controller {
     @FXML
     private Label dateLabel, scoreLabel;
     @FXML
-    private ImageView background, ship, arrowUp, arrowDown,arrowRight,arrowLeft, minimap, viewPlastic, viewFish, infoBox;
+    private ImageView background, ship, minimap, viewPlastic, viewFish, infoBox;
     private int x = 0, y = 0;
     private Game game;
 
@@ -109,7 +109,7 @@ public class Controller {
             if (game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()) {
                 deadFishShow(group);
             }
-            group.getChildren().addAll(dateLabel, scoreLabel, arrowUp, arrowDown, arrowRight, arrowLeft,minimap);
+            group.getChildren().addAll(dateLabel, scoreLabel, minimap);
             ship.setY(y);
             this.y = y;
             ship.setX(x);
@@ -178,7 +178,7 @@ public class Controller {
         if(viewFish!=null && !game.getDeadFishInteracted()){
             group.getChildren().add(viewFish);
         }
-        group.getChildren().addAll(dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft,minimap);
+        group.getChildren().addAll(dateLabel,scoreLabel,minimap);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
@@ -196,7 +196,7 @@ public class Controller {
             group.getChildren().add(viewPlastic);
         }
         deadFishInfoBox(group);
-        group.getChildren().addAll(dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft,minimap);
+        group.getChildren().addAll(dateLabel,scoreLabel,minimap);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
