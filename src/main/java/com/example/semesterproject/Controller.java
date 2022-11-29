@@ -157,15 +157,14 @@ public class Controller {
         if(!game.isHarbor() && checkPlasticPlacement()){
             if(game.collect()){
                 removePlasticUI();
-                if(game.getScore() == 100_000){
-                    quit();
-                }
             }
-
-
-        } else if (game.isIt2050()){
+        } else if (game.isHarbor()){
             game.dispose();
-            System.out.println(game.getScore());
+            if(game.getScore() == 100_000){
+                quit();
+            } else {
+                System.out.println(game.getScore());
+            }
         }
         updateScoreLabel();
     }
