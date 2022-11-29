@@ -215,16 +215,11 @@ public class Controller {
     }
 
     public boolean checkFishPlacement(){
-        if(ship.getBoundsInParent().intersects(viewFish.getBoundsInParent())){
-            return true;
-        }
-        else return false;
+        return ship.getBoundsInParent().intersects(viewFish.getBoundsInParent());
     }
 
     public boolean checkPlasticPlacement() {
-        if (ship.getBoundsInParent().intersects(viewPlastic.getBoundsInParent())) {
-            return true;
-        } else return false;
+        return ship.getBoundsInParent().intersects(viewPlastic.getBoundsInParent());
     }
 
     public void upgradeShip(){
