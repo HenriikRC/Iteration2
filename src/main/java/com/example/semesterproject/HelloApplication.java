@@ -77,8 +77,8 @@ public class HelloApplication extends Application {
     public static Stage getStage() {
         return stage;
     }
-    public void remove(Group group, Label lable){
-        group.getChildren().remove(lable);
+    public void remove(Group group, Label label){
+        group.getChildren().remove(label);
     }
     public static void main(String[] args) {
         launch();
