@@ -134,10 +134,10 @@ public class Controller {
         }
         viewPlastic = new ImageView(plastic);
         Random rng = new Random();
-        int rngX = rng.nextInt(0,((game.getCurrentRoom().getMaxXValue()*2)-64));
-        int rngY = rng.nextInt(0,((game.getCurrentRoom().getMaxYValue()*2)-64));
+        int rngX = rng.nextInt(48,(game.getCurrentRoom().getMaxXValue()*2)-200);
+        int rngY = rng.nextInt(48,(game.getCurrentRoom().getMaxXValue()*2)-120);
         viewPlastic.setLayoutX(rngX);
-        viewPlastic.setLayoutX(rngY);
+        viewPlastic.setLayoutY(rngY);
         group.getChildren().add(viewPlastic);
     }
 
