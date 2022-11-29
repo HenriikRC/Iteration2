@@ -25,6 +25,7 @@ public class Controller {
     private Label dateLabel, scoreLabel, infoLabel;
     @FXML
     private ImageView background, ship, minimap, viewPlastic, viewFish, infoBox;
+    private Group group;
     private int x = 0, y = 0;
     private Game game;
 
@@ -92,6 +93,7 @@ public class Controller {
             case LEFT -> left();
             case ENTER -> collect();
             case SPACE -> interact();
+            case I -> deadFishInfoRemove(infoLabel,infoBox);
             default -> {
             }
         }
@@ -105,7 +107,7 @@ public class Controller {
             viewFish = null;
             viewPlastic = null;
             background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
-            Group group = new Group();
+            group = new Group();
             group.getChildren().addAll(background,ship);
             if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor()) {
                 trashShow(group);
@@ -165,6 +167,7 @@ public class Controller {
                 removePlasticUI();
             }
         } else if (game.isHarbor()){
+            disposeDone();
             game.dispose();
             if(game.getScore() == 100_000){
                 quit();
@@ -177,7 +180,7 @@ public class Controller {
 
     public void removePlasticUI(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
-        Group group = new Group();
+        group = new Group();
         group.getChildren().addAll(background,ship);
         if(viewFish!=null && !game.getDeadFishInteracted()){
             group.getChildren().add(viewFish);
@@ -194,12 +197,12 @@ public class Controller {
 
     public void removeDeadFishUI(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
-        Group group = new Group();
+        group = new Group();
         group.getChildren().addAll(background,ship);
         if(viewPlastic!=null && !game.getIsCollected()){
             group.getChildren().add(viewPlastic);
         }
-        deadFishInfoBoxShow(group);
+        deadFishInfoBoxShow();
         group.getChildren().addAll(dateLabel,scoreLabel,minimap);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
@@ -220,7 +223,7 @@ public class Controller {
             removeDeadFishUI();
         }
     }
-    public void deadFishInfoBoxShow(Group group){
+    public void deadFishInfoBoxShow(){
         Image info = new Image("file:src/main/resources/Sprites/dialogbox.png");
         infoBox = new ImageView(info);
         infoBox.setX(0);
@@ -233,14 +236,8 @@ public class Controller {
         infoLabel.setFont(new Font("System Bold", 22));
         group.getChildren().addAll(infoBox,infoLabel);
     }
-    public void deadFishInfoRemove(Group group, Label label, ImageView im){
+    public void deadFishInfoRemove(Label label, ImageView im){
         group.getChildren().removeAll(label,im);
-        Scene scene = new Scene(group);
-        scene.setOnKeyPressed(this::handle);
-        (HelloApplication.getStage()).setScene(scene);
-        (HelloApplication.getStage()).setResizable(false);
-        (HelloApplication.getStage()).show();
-//        dateLabel.setText(game.getGameDateMessage());
     }
 
     public boolean checkFishPlacement(){
@@ -249,6 +246,20 @@ public class Controller {
 
     public boolean checkPlasticPlacement() {
         return ship.getBoundsInParent().intersects(viewPlastic.getBoundsInParent());
+    }
+    public void disposeDone(){
+        Label disposed = new Label();
+        disposed.setText(
+                "Du har genbrugt " + game.getShipCapacity()+ " tons plastik. Din score i alt er nu: "
+                        +(game.getScore()+ game.getShipCapacity()));
+        disposed.setLayoutY(600);
+        disposed.setLayoutX(100);
+
+        disposed.setFont(new Font("System Bold", 22));
+        group.getChildren().add(disposed);
+    }
+    public void upgradeDone(){
+
     }
 
     public void upgradeShip(){
