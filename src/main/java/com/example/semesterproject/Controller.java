@@ -33,6 +33,8 @@ public class Controller {
     private ImageView arrowLeft;
     private ImageView viewPlastic;
     private ImageView viewFish;
+    @FXML
+    private ImageView minimap;
     private int x = 0;
     private int y = 0;
     private Game game;
@@ -110,13 +112,14 @@ public class Controller {
         game.newMove();
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
-        group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
+        group.getChildren().add(background);
         if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor())  {
             trashShow(group);
         }
         if(game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()){
             deadFishShow(group);
         }
+        group.getChildren().addAll(ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft,minimap);
         ship.setY(y);
         this.y = y;
         ship.setX(x);
