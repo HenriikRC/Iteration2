@@ -9,10 +9,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import worldOfZuul.*;
 
@@ -248,18 +250,27 @@ public class Controller {
         return ship.getBoundsInParent().intersects(viewPlastic.getBoundsInParent());
     }
     public void disposeDone(){
-        Label disposed = new Label();
-        disposed.setText(
-                "Du har genbrugt " + game.getShipCapacity()+ " tons plastik. Din score i alt er nu: "
-                        +(game.getScore()+ game.getShipCapacity()));
-        disposed.setLayoutY(600);
-        disposed.setLayoutX(100);
-
+        Text disposed = new Text("Du har genbrugt " + game.getShipCapacity()+ " tons plastik. Din score i alt er nu: "
+                +(game.getScore()+ game.getShipCapacity()));
+        disposed.setFill(Color.web("#FFFFFF"));
+        disposed.setStrokeWidth(1);
+        disposed.setStroke(Color.web("000000"));
+        disposed.setLayoutY(605);
+        disposed.setLayoutX(80);
         disposed.setFont(new Font("System Bold", 22));
         group.getChildren().add(disposed);
     }
     public void upgradeDone(){
-
+        Text upgraded = new Text(
+                "Du har gjordt et fantastisk arbejde!" +"\n"+"FN har sponsorert en opgradering til dit skib."+ "\n"+
+                        "Du kan nu laste dit skib med " +game.getShipCapacityMax()+ " tons");
+        upgraded.setFill(Color.web("#FFFFFF"));
+        upgraded.setStrokeWidth(1);
+        upgraded.setStroke(Color.web("000000"));
+        upgraded.setLayoutY(655);
+        upgraded.setLayoutX(200);
+        upgraded.setFont(new Font("System Bold", 22));
+        group.getChildren().add(upgraded);
     }
 
     public void upgradeShip(){
@@ -272,6 +283,7 @@ public class Controller {
         } else {
             upgradeShip();
             updateScoreLabel();
+            upgradeDone();
         }
     }
 
