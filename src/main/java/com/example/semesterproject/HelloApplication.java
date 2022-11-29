@@ -32,7 +32,6 @@ public class HelloApplication extends Application {
         Image start = new Image("file:src/main/resources/Misc/start.png");
         ImageView show = new ImageView(start);
         Label startLabel = new Label("",show);
-
         controller.updateScoreLabel();
         Group group = new Group();
 

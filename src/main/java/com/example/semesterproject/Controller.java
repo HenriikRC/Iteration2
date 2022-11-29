@@ -28,7 +28,7 @@ public class Controller {
     @FXML
     private Label dateLabel, scoreLabel, infoLabel;
     @FXML
-    private ImageView background, ship, minimap, viewPlastic, viewFish, infoBox;
+    private ImageView background, ship, minimap, viewPlastic, viewFish, infoBox,mapMarker;
     private Group group;
     private int x = 0, y = 0;
     private Game game;
@@ -119,7 +119,8 @@ public class Controller {
             if (game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()) {
                 deadFishShow(group);
             }
-            group.getChildren().addAll(dateLabel, scoreLabel, minimap);
+            moveMapMarker(game.getCurrentRoom());
+            group.getChildren().addAll(dateLabel, scoreLabel, minimap,mapMarker);
             ship.setY(y);
             this.y = y;
             ship.setX(x);
@@ -189,7 +190,7 @@ public class Controller {
         if(viewFish!=null && !game.getDeadFishInteracted()){
             group.getChildren().add(viewFish);
         }
-        group.getChildren().addAll(dateLabel,scoreLabel,minimap);
+        group.getChildren().addAll(dateLabel,scoreLabel,minimap,mapMarker);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
@@ -207,7 +208,7 @@ public class Controller {
             group.getChildren().add(viewPlastic);
         }
 
-        group.getChildren().addAll(dateLabel,scoreLabel,minimap);
+        group.getChildren().addAll(dateLabel,scoreLabel,minimap,mapMarker);
         deadFishInfoBoxShow();
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
@@ -292,6 +293,10 @@ public class Controller {
             updateScoreLabel();
             upgradeDone();
         }
+    }
+    public void moveMapMarker(Room currentRoom){
+        mapMarker.setLayoutX(game.getCurrentRoom().getMapMarkerX());
+        mapMarker.setLayoutY(game.getCurrentRoom().getMapMarkerY());
     }
 
     public void quit(){

@@ -27,5 +27,10 @@
             <Image url="@../../../Icons/minimap.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="mapMarker" fitHeight="5.0" fitWidth="5.0" layoutX="66.0" layoutY="742.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Icons/mapMarker.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
