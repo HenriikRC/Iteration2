@@ -9,33 +9,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import worldOfZuul.*;
+
 import java.util.Random;
 
 
 public class Controller {
 
     @FXML
-    private Label dateLabel;
+    private Label dateLabel, scoreLabel;
     @FXML
-    private Label scoreLabel;
-    @FXML
-    private ImageView background;
-    @FXML
-    private ImageView ship;
-    @FXML
-    private ImageView arrowUp;
-    @FXML
-    private ImageView arrowDown;
-    @FXML
-    private ImageView arrowRight;
-    @FXML
-    private ImageView arrowLeft;
-    private ImageView viewPlastic;
-    private ImageView viewFish;
-    @FXML
-    private ImageView minimap;
-    private int x = 0;
-    private int y = 0;
+    private ImageView background, ship, arrowUp, arrowDown,arrowRight,arrowLeft, minimap, viewPlastic, viewFish, infoBox;
+    private int x = 0, y = 0;
     private Game game;
 
     public void setGame(Game game){

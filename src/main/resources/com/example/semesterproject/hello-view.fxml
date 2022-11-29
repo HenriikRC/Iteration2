@@ -16,7 +16,7 @@
             <Image url="@../../../Misc/skib.png" />
          </image>
       </ImageView>
-      <Label fx:id="scoreLabel" alignment="CENTER_RIGHT" layoutX="531.0" layoutY="60.0" prefHeight="30.0" prefWidth="234.0">
+      <Label fx:id="scoreLabel" alignment="CENTER_RIGHT" layoutX="497.0" layoutY="60.0" prefHeight="46.0" prefWidth="269.0">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
