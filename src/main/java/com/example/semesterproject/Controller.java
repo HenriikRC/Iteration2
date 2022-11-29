@@ -3,6 +3,7 @@ package com.example.semesterproject;
 
 import javafx.animation.PathTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -204,8 +205,9 @@ public class Controller {
         if(viewPlastic!=null && !game.getIsCollected()){
             group.getChildren().add(viewPlastic);
         }
-        deadFishInfoBoxShow();
+
         group.getChildren().addAll(dateLabel,scoreLabel,minimap);
+        deadFishInfoBoxShow();
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
@@ -226,14 +228,17 @@ public class Controller {
         }
     }
     public void deadFishInfoBoxShow(){
-        Image info = new Image("file:src/main/resources/Sprites/dialogbox.png");
+        Image info = new Image("file:src/main/resources/Sprites/dialogbox.png", 768, 150, true, true);
+
         infoBox = new ImageView(info);
+
         infoBox.setX(0);
         infoBox.setY(0);
         infoLabel = new Label();
         infoLabel.setText(game.getCurrentRoom().getDeadFishDeath().getDeathReason());
-        infoLabel.setLayoutY(0);
-        infoLabel.setLayoutX(0);
+        infoLabel.setAlignment(Pos.CENTER);
+        infoLabel.setLayoutY(20);
+        infoLabel.setLayoutX(160);
 
         infoLabel.setFont(new Font("System Bold", 22));
         group.getChildren().addAll(infoBox,infoLabel);
@@ -241,6 +246,7 @@ public class Controller {
     public void deadFishInfoRemove(Label label, ImageView im){
         group.getChildren().removeAll(label,im);
     }
+
 
     public boolean checkFishPlacement(){
         return ship.getBoundsInParent().intersects(viewFish.getBoundsInParent());

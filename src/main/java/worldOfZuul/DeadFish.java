@@ -8,9 +8,9 @@ public class DeadFish implements Spawnable {
         reasons.add("Fisken er viklet ind i en fiskesnor og er druknet");
         reasons.add("Fisken har fået plastik i spiserøret og er død af sult");
         reasons.add("Fisken er fanget i et uloveligt fiskenet");
-        reasons.add("Fisken har viklet sig ind i en plasitkpose og er druknet");
+        reasons.add("Fisken har viklet sig ind i en plasitkpose\nog er druknet");
         reasons.add("Fisken har troet plastik var mad og er død af sult");
-        reasons.add("Fisken har noget om kroppen og er blevet for tung til at følge med sin stime");
+        reasons.add("Fisken har noget om kroppen og er\nblevet for tung til at følge med sin stime");
     }
 
 
