@@ -34,7 +34,6 @@ public class Game {
             skipperSkrald.setCapacityMax(8_000);
         }
     }
-
     public Game() {                                     // Constructor for the game class
         createRooms();                                  // Creates the rooms in the game
         commands = new CommandWordsImplementation();

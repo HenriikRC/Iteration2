@@ -1,6 +1,7 @@
 package com.example.semesterproject;
 
 
+import javafx.animation.PathTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -8,8 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import worldOfZuul.*;
 
 import java.util.Random;
@@ -249,9 +253,53 @@ public class Controller {
     }
 
     public void quit(){
+        background = new ImageView(new Image("file:src/main/resources/MapFiles/E3.png"));
+        Group group = new Group();
+        if(game.isIt2050()){
+            ImageView skipperSkrald = new ImageView(new Image("file:src/main/resources/Sprites/Skipper Skrald1.png"));
+            skipperSkrald.setX(318);
+            skipperSkrald.setY(250);
+            skipperSkrald.resize(200,200);
+            ship.setX(0);
+            ship.setY(0);
+            ImageView trash1 = new ImageView(new Image("file:src/main/resources/Sprites/skraldL.png"));
+            trash1.setX(100);
+            trash1.setY(200);
+            Path path1 = new Path();
+            CubicCurveTo cubicCurveTo = new CubicCurveTo(100,-400,175,250,100,100);
+            path1.getElements().add(new MoveTo(100,100));
+            path1.getElements().add(cubicCurveTo);
+            PathTransition pathTransition1 = new PathTransition();
+            pathTransition1.setDuration(Duration.millis(4000));
+            pathTransition1.setNode(trash1);
+            pathTransition1.setPath(path1);
+            pathTransition1.setCycleCount(1);
+            pathTransition1.setAutoReverse(false);
+            pathTransition1.play();
+            Label text1 = new Label();
+            text1.setText("Du nåede desværre ikke at indsamle 100.000 tons plastik inden år 2050");
+            text1.setLayoutX(19);
+            text1.setLayoutY(23);
+            text1.setFont(new Font("System Bold",22));
+            Label text2 = new Label();
+            text2.setText("Havene er derfor stadig fyldt med plast");
+            text2.setFont(new Font("System Bold",22));
+            text2.setLayoutX(174);
+            text2.setLayoutY(55);
+            Label text3 = new Label();
+            text3.setText("Og alle fisk i vandet er døde");
+            text3.setLayoutX(227);
+            text3.setLayoutY(87);
+            text3.setFont(new Font("System Bold",22));
+            group.getChildren().addAll(background,ship,skipperSkrald,text1,text2,text3,trash1);
+            Scene scene = new Scene(group);
+            (HelloApplication.getStage()).setScene(scene);
+            (HelloApplication.getStage()).show();
 
+            System.out.println("Hej");
+
+        } else if (game.getScore() >= 100_000) {
+
+        }
     }
-
-
-
 }
