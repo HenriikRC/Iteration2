@@ -270,11 +270,8 @@ public class Game {
     }
 
     /** Calculates and increments the date of the game */
-    public String getGameDate(){
-        String[] months = {"Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli",  // String array of all the months
-                "August", "September", "Oktober", "November", "December"};
     public Date getGameDate(){
-        return gameDate;
+            return gameDate;
     }
     public String getGameDateMessage(){
         String[] months = {"Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli",  // String array of all the months

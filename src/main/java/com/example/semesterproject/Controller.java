@@ -116,13 +116,14 @@ public class Controller {
             viewPlastic = null;
             background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
             Group group = new Group();
-            group.getChildren().addAll(background, ship, dateLabel, scoreLabel, arrowUp, arrowDown, arrowRight, arrowLeft);
+            group.getChildren().addAll(background,ship);
             if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor()) {
                 trashShow(group);
             }
             if (game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()) {
                 deadFishShow(group);
             }
+            group.getChildren().addAll(dateLabel, scoreLabel, arrowUp, arrowDown, arrowRight, arrowLeft,minimap);
             ship.setY(y);
             this.y = y;
             ship.setX(x);
@@ -135,27 +136,6 @@ public class Controller {
             dateLabel.setText(game.getGameDateMessage());
             System.out.println(game.getRoomDescription());
         }
-        background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
-        Group group = new Group();
-        group.getChildren().add(background);
-        if (game.getCurrentRoom().spawnPlastic() && !game.isHarbor())  {
-            trashShow(group);
-        }
-        if(game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()){
-            deadFishShow(group);
-        }
-        group.getChildren().addAll(ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft,minimap);
-        ship.setY(y);
-        this.y = y;
-        ship.setX(x);
-        this.x = x;
-        Scene scene = new Scene(group);
-        scene.setOnKeyPressed(this::handle);
-        (HelloApplication.getStage()).setScene(scene);
-        (HelloApplication.getStage()).setResizable(false);
-        (HelloApplication.getStage()).show();
-        dateLabel.setText(game.getGameDate());
-        System.out.println(game.getRoomDescription());
     }
 
     private void trashShow(Group group) {
@@ -209,10 +189,11 @@ public class Controller {
     public void removePlasticUI(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
-        group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
+        group.getChildren().addAll(background,ship);
         if(viewFish!=null && !game.getDeadFishInteracted()){
             group.getChildren().add(viewFish);
         }
+        group.getChildren().addAll(dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft,minimap);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
@@ -225,10 +206,11 @@ public class Controller {
     public void removeDeadFishUI(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
-        group.getChildren().addAll(background,ship,dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft);
+        group.getChildren().addAll(background,ship);
         if(viewPlastic!=null && !game.getIsCollected()){
             group.getChildren().add(viewPlastic);
         }
+        group.getChildren().addAll(dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft,minimap);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
