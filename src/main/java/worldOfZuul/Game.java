@@ -10,7 +10,7 @@ public class Game {
     private CommandWords commands;
     private boolean isCollected;                        // True if plastic in current room has been collected once.
     private boolean deadFishInteracted = false;
-    private Date gameDate = new Date(148,          // Sets the date for the start of the game to October 2022.
+    private Date gameDate = new Date(122,          // Sets the date for the start of the game to October 2022.
             Calendar.OCTOBER,0);
     private Room gameHarbor;
     private Ship skipperSkrald = new Ship();
