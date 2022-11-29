@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import worldOfZuul.*;
 
 import java.util.Random;
@@ -193,6 +195,7 @@ public class Controller {
         if(viewPlastic!=null && !game.getIsCollected()){
             group.getChildren().add(viewPlastic);
         }
+        deadFishInfoBox(group);
         group.getChildren().addAll(dateLabel,scoreLabel,arrowUp,arrowDown,arrowRight,arrowLeft,minimap);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
@@ -209,8 +212,19 @@ public class Controller {
     public void interactWithDeadFish(){
         if(!game.getDeadFishInteracted() && viewFish!=null && checkFishPlacement()){
             game.getDeathReason();
+
             removeDeadFishUI();
         }
+    }
+    public void deadFishInfoBox(Group group){
+    Label label = new Label();
+    label.setText(game.getCurrentRoom().getDeadFishDeath().getDeathReason());
+    label.setLayoutY(0);
+    label.setLayoutX(0);
+
+    label.setFont(new Font("System Bold", 22));
+    group.getChildren().add(label);
+
     }
 
     public boolean checkFishPlacement(){
