@@ -167,7 +167,7 @@ public class Controller {
     }
 
     public void collect() {
-        if(!game.isHarbor() && viewPlastic!=null &&checkPlasticPlacement()){
+        if(!game.isHarbor() && viewPlastic!=null && checkPlasticPlacement()){
             if(game.collect()){
                 removePlasticUI();
                 viewPlastic = null;
@@ -298,10 +298,10 @@ public class Controller {
             Text[] endTexts = {text1, text2, text3, text4};
 
             group.getChildren().addAll(background);
-            ImageView[] smallPlastic = generateImageView("skraldS",10,120,200);
+            ImageView[] smallPlastic = generateImageView("skraldS",100,120,200);
             ImageView[] mediumPlastic = generateImageView("skraldM",10,120,200);
             ImageView[] largePlastic = generateImageView("skraldL",10,120,200);
-            ImageView[] deadFish = generateImageView("fish",20,64,200);
+            ImageView[] deadFish = generateImageView("fish",30,64,200);
             for(ImageView imageView:smallPlastic){
                group.getChildren().add(imageView);
             }
@@ -330,30 +330,11 @@ public class Controller {
 
         }
     }
-    public void Animate(ImageView image,int x, int y){
-        generateAnimation2(image,x,y);
-    }
-
-    private void generateAnimation(ImageView image, int x, int y) {
-        Path path1 = new Path();
-        image.setX(-x);
-        image.setY(-y);
-        CubicCurveTo cubicCurveTo = new CubicCurveTo(-x,-y,-200,-100, x, y);
-        path1.getElements().add(new MoveTo(368,-y));
-        path1.getElements().add(cubicCurveTo);
-        PathTransition pathTransition1 = new PathTransition();
-        pathTransition1.setDuration(Duration.millis(4000));
-        pathTransition1.setNode(image);
-        pathTransition1.setPath(path1);
-        pathTransition1.setCycleCount(1);
-        pathTransition1.setAutoReverse(false);
-        pathTransition1.play();
-    }
-    private void generateAnimation2(ImageView image, int x, int y) {
-        image.setLayoutY(-200);
-        image.setLayoutX(x-100);
+    private void generateAnimation(ImageView imageView, int x, int y) {
+        imageView.setLayoutY(-200);
+        imageView.setLayoutX(x-100);
         TranslateTransition translateTransition = new TranslateTransition();
-        translateTransition.setNode(image);
+        translateTransition.setNode(imageView);
         translateTransition.setDuration(Duration.millis(5000));
         translateTransition.setCycleCount(1);
         translateTransition.setByY(y+150);
@@ -370,7 +351,7 @@ public class Controller {
             int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue()+(imageHeight)
                     ,game.getCurrentRoom().getMaxYValue()*2-(imageHeight-(imageHeight/2)));
             imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/"+sourceDirectory+".png"));
-            Animate(imageViews[i],rngX,rngY);
+            generateAnimation(imageViews[i],rngX,rngY);
 
         } return imageViews;
     }
