@@ -1,7 +1,5 @@
 package com.example.semesterproject;
 
-
-import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -12,15 +10,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import worldOfZuul.*;
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -119,6 +112,7 @@ public class Controller {
             if (game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()) {
                 deadFishShow(group);
             }
+
             moveMapMarker(game.getCurrentRoom());
             group.getChildren().addAll(dateLabel, scoreLabel, minimap,mapMarker);
             ship.setY(y);
