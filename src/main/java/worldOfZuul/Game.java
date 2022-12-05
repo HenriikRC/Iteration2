@@ -28,7 +28,7 @@ public class Game {
             skipperSkrald.setCapacityMax(14_000);
         } else if (getScore() > 24_000) {
             skipperSkrald.setCapacityMax(12_000);
-        } else if (getScore() > 14_000) {
+        } else if (getScore() > 12_000) {
             skipperSkrald.setCapacityMax(10_000);
         } else if (getScore() > 6_000) {
             skipperSkrald.setCapacityMax(8_000);
@@ -49,25 +49,25 @@ public class Game {
         Room Harbor;
 
         // 19 ocean rooms as objects of Room.
-        A1 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A1.png",-274,384,-274,384);
-        A2 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A2.png",-384,384,-274,274);
-        A3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384);
-        A4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384);
-        A5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",-384,274,-274,384);
-        B1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384);
-        B3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",-274,384,-384,384);
-        B4 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B4-E4.png",-384,384,-384,274);
-        B5 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B5-E5.png",-384,274,-384,274);
-        C1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384);
-        C3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384);
-        D1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384);
-        D3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",-274,384,-384,384);
-        D4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384);
-        D5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",-384,274,-274,384);
-        E1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/E1.png",-274,274,-384,274);
-        E3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/E3.png",-274,384,-384,384);
-        E4 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B4-E4.png",-384,384,-384,274);
-        E5 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B5-E5.png",-384,274,-384,274);
+        A1 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A1.png",-274,384,-274,384,30,663);
+        A2 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A2.png",-384,384,-274,274,48,663);
+        A3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384,66,663);
+        A4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384,82,663);
+        A5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",-384,274,-274,384,97,663);
+        B1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384,30,680);
+        B3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",-274,384,-384,384,66,680);
+        B4 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B4-E4.png",-384,384,-384,274,82,680);
+        B5 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B5-E5.png",-384,274,-384,274,97,680);
+        C1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384,30,697);
+        C3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384,66,697);
+        D1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384,30,714);
+        D3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",-274,384,-384,384,66,714);
+        D4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384,82,714);
+        D5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",-384,274,-274,384,97,714);
+        E1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/E1.png",-274,274,-384,274,30,730);
+        E3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/E3.png",-274,384,-384,384,66,730);
+        E4 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B4-E4.png",-384,384,-384,274,82,730);
+        E5 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B5-E5.png",-384,274,-384,274,97,730);
 
         // 6 islands rooms created as objects of Room
         B2 = new Room("strandet på en ø");
@@ -78,7 +78,7 @@ public class Game {
         E2 = new Room("strandet på en ø");
 
         //Changed Object type from Room to Harbor
-        Harbor = new Harbor("nu i havnen","Du er i havnen","file:src/main/resources/MapFiles/havn.png",-100,120,-384,150);
+        Harbor = new Harbor("nu i havnen","Du er i havnen","file:src/main/resources/MapFiles/havn.png",-100,120,-384,150,66,742);
         gameHarbor = Harbor;
 
         // Room[] allOcean = {A1,A2,A3,A4,A5,B1,B3,B4,B5,C1,C3,D1,D3,D4,D5,E1,E3,E4,E5};
@@ -232,11 +232,7 @@ public class Game {
 
     /** Carries the logic for the QUIT command */
     public boolean quit(Command command) {
-        if (command.hasCommandValue()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !command.hasCommandValue();
     }
 
     /** Carries the logic for the DISPOSE command */
@@ -263,9 +259,7 @@ public class Game {
 
     /** Function to check if the gameDate is currently 2050 or the current move will make it so */
     public boolean isIt2050() {
-        if(gameDate.compareTo(new Date(149,10,29)) >= 0) {
-            return true;
-        } else return false;
+        return gameDate.compareTo(new Date(149, 10, 29)) >= 0;
     }
 
     /** Calculates and increments the date of the game */

@@ -26,6 +26,11 @@
             <Image url="@../../../Icons/minimap.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="mapMarker" fitHeight="5.0" fitWidth="5.0" layoutX="66.0" layoutY="742.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Icons/mapMarker.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="dialogBox" fitHeight="112.0" fitWidth="366.0" layoutX="401.0" layoutY="648.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../Sprites/dialogbox.png" />

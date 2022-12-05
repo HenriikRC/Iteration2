@@ -17,6 +17,14 @@ public class Room
     private int maxXValue;
     private int minYValue;
     private int maxYValue;
+    private int mapMarkerX;
+    private int mapMarkerY;
+    public int getMapMarkerX(){
+        return mapMarkerX;
+    }
+    public int getMapMarkerY(){
+        return mapMarkerY;
+    }
 
     public int getMaxXValue() {
         return maxXValue;
@@ -53,7 +61,7 @@ public class Room
         this.mapDirectory = mapDirectory;
         exits = new HashMap<String, Room>();
     }
-    public Room(String description, String whereToSailNext,String mapDirectory,int minXValue, int maxXValue, int minYValue, int maxYValue)
+    public Room(String description, String whereToSailNext,String mapDirectory,int minXValue, int maxXValue, int minYValue, int maxYValue, int mapMarkerX, int mapMarkerY)
     {
         this.whereToSailNext = whereToSailNext;
         this.description = description;
@@ -62,17 +70,8 @@ public class Room
         this.maxXValue = maxXValue;
         this.minYValue = minYValue;
         this.maxYValue = maxYValue;
-        exits = new HashMap<String, Room>();
-    }
-    public Room(String description, String whereToSailNext,String mapDirectory,int minXValue, int maxXValue, int minYValue, int maxYValue,int exitXMin,int exitXMax)
-    {
-        this.whereToSailNext = whereToSailNext;
-        this.description = description;
-        this.mapDirectory = mapDirectory;
-        this.minXValue = minXValue;
-        this.maxXValue = maxXValue;
-        this.minYValue = minYValue;
-        this.maxYValue = maxYValue;
+        this.mapMarkerX = mapMarkerX;
+        this.mapMarkerY = mapMarkerY;
         exits = new HashMap<String, Room>();
     }
 
@@ -80,13 +79,13 @@ public class Room
     public boolean spawnPlastic(){
 //      Metode der laver plastik objekt, kører spawnchance og herefter gemmer tilfældig mængde i "currentPlastic" og retunere "amount".
         Plastic plastic = new Plastic();
-        if(plastic.spawnChance() == true){
+        if(plastic.spawnChance()){
             plastic.spawn();
             this.amountPlastic = plastic.getAmount();
             this.currentPlastic = plastic;
             return true;
         }
-        else if (plastic.spawnChance() == false){
+        else if (!plastic.spawnChance()){
             this.amountPlastic = 0;
             this.currentPlastic = null;
             return false;
@@ -161,11 +160,7 @@ public class Room
     }
 
     public boolean checkRoom(){
-    if(getShortDescription()=="nu i havnen") {
-            return true;
-        } else {
-            return false;
-        }
+        return getShortDescription() == "nu i havnen";
     }
 }
 

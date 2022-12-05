@@ -1,7 +1,6 @@
 package com.example.semesterproject;
 
-
-import javafx.animation.PathTransition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -16,11 +15,10 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import worldOfZuul.*;
-
-import java.util.Random;
+import java.util.*;
 
 
 public class Controller {
@@ -28,14 +26,20 @@ public class Controller {
     @FXML
     private Label dateLabel, scoreLabel, infoLabel;
     @FXML
-    private ImageView background, ship, minimap, viewPlastic, viewFish, dialogBox;
+    private ImageView background, ship, minimap, viewPlastic, viewFish, mapMarker, dialogBox;
+    private Text upgradeAvailable;
     private Group group;
+    private Stage stage;
     private int x = 0, y = 0;
     private Game game;
 
     public void setGame(Game game){
         this.game = game;
         dateLabel.setText(game.getGameDateMessage());
+    }
+
+    public void setStage(Stage stage){
+        this.stage = stage;
     }
 
     public void up() {
@@ -119,18 +123,21 @@ public class Controller {
             if (game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()) {
                 deadFishShow(group);
             }
-            group.getChildren().addAll(dateLabel, scoreLabel, minimap, dialogBox);
+            moveMapMarker();
+            group.getChildren().addAll(dateLabel, scoreLabel, minimap, mapMarker,dialogBox);
             ship.setY(y);
             this.y = y;
             ship.setX(x);
             this.x = x;
             Scene scene = new Scene(group);
             scene.setOnKeyPressed(this::handle);
-            (HelloApplication.getStage()).setScene(scene);
-            (HelloApplication.getStage()).setResizable(false);
-            (HelloApplication.getStage()).show();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
             dateLabel.setText(game.getGameDateMessage());
-            System.out.println(game.getRoomDescription());
+            if (game.isHarbor()){
+                group.getChildren().add(upgradeAvailable());
+            }
         }
     }
 
@@ -166,13 +173,15 @@ public class Controller {
     }
 
     public void collect() {
-        if(!game.isHarbor() && checkPlasticPlacement()){
+        if(!game.isHarbor() && viewPlastic!=null && checkPlasticPlacement()){
             if(game.collect()){
                 removePlasticUI();
+                viewPlastic = null;
             }
         } else if (game.isHarbor()){
             disposeDone(infoLabel);
             game.dispose();
+            group.getChildren().add(upgradeAvailable());
             if(game.getScore() == 100_000){
                 quit();
             } else {
@@ -195,38 +204,16 @@ public class Controller {
     }
 
     public void removePlasticUI(){
-        background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
-        group = new Group();
-        group.getChildren().addAll(background,ship);
-        if(viewFish!=null && !game.getDeadFishInteracted()){
-            group.getChildren().add(viewFish);
+        if(viewPlastic!=null) {
+            group.getChildren().remove(viewPlastic);
         }
-        group.getChildren().addAll(dateLabel,scoreLabel,minimap,dialogBox);
-        Scene scene = new Scene(group);
-        scene.setOnKeyPressed(this::handle);
-        (HelloApplication.getStage()).setScene(scene);
-        (HelloApplication.getStage()).setResizable(false);
-        (HelloApplication.getStage()).show();
-        dateLabel.setText(game.getGameDateMessage());
-        viewPlastic = null;
     }
 
     public void removeDeadFishUI(){
-        background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
-        group = new Group();
-        group.getChildren().addAll(background,ship,dialogBox);
-        if(viewPlastic!=null && !game.getIsCollected()){
-            group.getChildren().add(viewPlastic);
+        if(viewFish!=null) {
+            group.getChildren().remove(viewFish);
+            deadFishInfoBoxShow();
         }
-
-        group.getChildren().addAll(dateLabel,scoreLabel,minimap);
-        deadFishInfoBoxShow();
-        Scene scene = new Scene(group);
-        scene.setOnKeyPressed(this::handle);
-        (HelloApplication.getStage()).setScene(scene);
-        (HelloApplication.getStage()).setResizable(false);
-        (HelloApplication.getStage()).show();
-        dateLabel.setText(game.getGameDateMessage());
     }
 
     public void updateScoreLabel(){
@@ -236,8 +223,10 @@ public class Controller {
     public void interactWithDeadFish(){
         if(!game.getDeadFishInteracted() && viewFish!=null && checkFishPlacement()){
             game.getDeathReason();
-
             removeDeadFishUI();
+            viewFish = null;
+        } else if(game.getDeadFishInteracted() && viewFish==null){
+            deadFishInfoRemove(infoLabel,infoBox);
         }
     }
     public void deadFishInfoBoxShow(){
@@ -278,6 +267,26 @@ public class Controller {
         infoLabel.setFont(new Font("System Bold", 15));
         group.getChildren().add(infoLabel);
     }
+    public Text upgradeAvailable() {
+        Text upgradeAvailable = new Text("Du kan opgradere dit skib! Tryk >mellemrum< for at opgrade");
+        upgradeAvailable.setFill(Color.web("#FFFFFF"));
+        upgradeAvailable.setStrokeWidth(1);
+        upgradeAvailable.setStroke(Color.web("000000"));
+        upgradeAvailable.setFont(new Font("System Bold", 22));
+        upgradeAvailable.setLayoutX(80);
+        upgradeAvailable.setLayoutY(500);
+        this.upgradeAvailable = upgradeAvailable;
+        if(game.isHarbor() && game.getScore()>=48_000 && game.getShipCapacityMax() < 14_000){
+            return upgradeAvailable;
+        } else if (game.isHarbor() && game.getScore()>=24_000 && game.getShipCapacityMax() < 12_000){
+            return upgradeAvailable;
+        } else if (game.isHarbor() && game.getScore()>=14_000 && game.getShipCapacityMax() < 10_000){
+            return upgradeAvailable;
+        } else if (game.isHarbor() && game.getScore()>=6_000 && game.getShipCapacityMax() < 8_000){
+            System.out.println("Hej");
+            return upgradeAvailable;
+        } else return new Text("");
+    }
     public void upgradeDone(Label label){
         group.getChildren().remove(label);
         infoLabel = new Label();
@@ -290,6 +299,8 @@ public class Controller {
 
         infoLabel.setFont(new Font("System Bold", 15));
         group.getChildren().add(infoLabel);
+        group.getChildren().remove(upgradeAvailable);
+        upgradeAvailable = null;
     }
 
     public void upgradeShip(){
@@ -305,104 +316,135 @@ public class Controller {
             upgradeDone(infoLabel);
         }
     }
+    /** Moves the mapMarker to the coordinates associated with the current room. */
+    public void moveMapMarker(){
+        mapMarker.setLayoutX(game.getCurrentRoom().getMapMarkerX());
+        mapMarker.setLayoutY(game.getCurrentRoom().getMapMarkerY());
+    }
 
+    /** Creating either a losing screen or a victory screen **/
     public void quit(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
+        /* Generating ImageView from the Image of Skipper Skrald */
+        ImageView skipperSkrald = new ImageView(new Image("file:src/main/resources/Sprites/Skipper Skrald1.png"));
+
+        /* Sets the position and size of Skipper Skrald */
+        skipperSkrald.setX(318);
+        skipperSkrald.setY(250);
+        skipperSkrald.resize(200,200);
+
+        /* Sets the position of the ship to the center */
+        ship.setX(0);
+        ship.setY(0);
+
+        /* Adds background of the lost-game screen (Current room is the background */
+        group.getChildren().addAll(background);
         if(game.isIt2050()){
-            ImageView skipperSkrald = new ImageView(new Image("file:src/main/resources/Sprites/Skipper Skrald1.png"));
-            skipperSkrald.setX(318);
-            skipperSkrald.setY(250);
-            skipperSkrald.resize(200,200);
-            ship.setX(0);
-            ship.setY(0);
-            ImageView trash1 = new ImageView();
-            ImageView trash2 = new ImageView();
-            ImageView trash3 = new ImageView();
-            ImageView trash4 = new ImageView();
-            ImageView trash5 = new ImageView();
-            ImageView trash6 = new ImageView();
-            ImageView trash7 = new ImageView();
-            ImageView trash8 = new ImageView();
-            ImageView trash9 = new ImageView();
-            ImageView trash10 = new ImageView();
-            ImageView fish1 = new ImageView();
-            ImageView fish2 = new ImageView();
-            ImageView fish3 = new ImageView();
-            ImageView fish4 = new ImageView();
-            ImageView fish5 = new ImageView();
-            ImageView fish6 = new ImageView();
-            ImageView fish7 = new ImageView();
+            /* Generating ImageView[] of the different plastic icons and the dead fish */
+            ImageView[] smallPlastic = generateImageView("skraldS",100,120,200);
+            ImageView[] mediumPlastic = generateImageView("skraldM",10,120,200);
+            ImageView[] largePlastic = generateImageView("skraldL",10,120,200);
+            ImageView[] deadFish = generateImageView("fish",30,64,200);
 
-            Animate(trash1,"skraldL",200,300);
-            Animate(trash2,"skraldM",150,150);
-            Animate(trash3,"skraldL",600,500);
-            Animate(trash4,"skraldS",210,700);
-            Animate(trash5,"skraldS",585,100);
-            Animate(trash6,"skraldM",500,400);
-            Animate(trash7,"skraldS",0,100);
-            Animate(trash8,"skraldL",650,700);
-            Animate(trash9,"skraldL",25,600);
-            Animate(trash10,"skraldL",200,250);
-            Animate(fish1,"fish",475,300);
-            Animate(fish2,"fish",250,190);
-            Animate(fish3,"fish",225,600);
-            Animate(fish4,"fish",575,499);
-            Animate(fish5,"fish",150,380);
-            Animate(fish6,"fish",75,100);
-            Animate(fish7,"fish",700,700);
+            /* Merging the generated ImageView[] into one */
+            ImageView[] mergedImageView = uniteImageViews(smallPlastic,mediumPlastic,largePlastic,deadFish);
 
-            Label text1 = new Label();
-            text1.setText("Du nåede desværre ikke at indsamle 100.000 tons plastik inden år 2050");
-            text1.setLayoutX(19);
-            text1.setLayoutY(23);
-            text1.setFont(new Font("System Bold",22));
-            Label text2 = new Label();
-            text2.setText("Havene er derfor stadig fyldt med plast");
-            text2.setFont(new Font("System Bold",22));
-            text2.setLayoutX(174);
-            text2.setLayoutY(55);
-            text2.setTextAlignment(TextAlignment.CENTER);
-            Label text3 = new Label();
-            text3.setText("Og alle fisk i vandet er døde");
-            text3.setLayoutX(227);
-            text3.setLayoutY(87);
-            text3.setFont(new Font("System Bold",22));
-            Label text4 = new Label();
-            text4.setText("Du nåede at indsamle " + game.getScore() + " tons plast");
-            text4.setLayoutX(187);
-            text4.setLayoutY(637);
-            text4.setFont(new Font("System Bold", 22));
-            group.getChildren().addAll(background,ship,skipperSkrald,text1,text2,text3,text4);
-            group.getChildren().addAll(trash1,trash2,trash3,trash4,trash5,trash6,trash7,trash8,trash9,trash10);
-            group.getChildren().addAll(fish1,fish2,fish3,fish4,fish5,fish6,fish7);
-            Scene scene = new Scene(group);
-            (HelloApplication.getStage()).setScene(scene);
-            (HelloApplication.getStage()).show();
+            /* Adds all the ImageView objects to the group */
+            for(ImageView imageView:mergedImageView){
+                group.getChildren().add(imageView);
+            }
 
+            /* Text labels for end screen (lost) */
+            Text text1 = new Text(19,23,"Du nåede desværre ikke at indsamle 100.000 tons plastik inden år 2050");
+            Text text2 = new Text(174,55,"Havene er derfor stadig fyldt med plast");
+            Text text3 = new Text(227,87,"Og alle fisk i vandet er døde");
+            Text text4 = new Text(187,637,"Du nåede at indsamle " + game.getScore() + " tons plast");
+            Text[] endTexts = {text1, text2, text3, text4};
+
+            /* Styling for text and adding them to the group */
+            for(Text text:endTexts){
+                text.setFill(Color.web("#FFFFFF"));
+                text.setStrokeWidth(1);
+                text.setStroke(Color.web("000000"));
+                text.setFont(new Font("System Bold", 22));
+                group.getChildren().add(text);
+            }
         } else if (game.getScore() >= 100_000) {
 
         }
+        /* Adds ship and character Skipper Skrald to the group */
+        group.getChildren().addAll(ship,skipperSkrald);
+
+        /* New scene of the group */
+        Scene scene = new Scene(group);
+        /* Set the scene of the stage */
+        stage.setScene(scene);
+        /* Shows the stage */
+        stage.show();
+    }
+    /** Animates the ImageView to fall down from above the window into the scene */
+    private void generateAnimation(ImageView imageView, int x, int y) {
+        /* Places the ImageView above the window */
+        imageView.setLayoutY(-200);
+        imageView.setLayoutX(x-100);
+
+        /* Animation of the ImageView */
+        TranslateTransition translateTransition = new TranslateTransition();
+        translateTransition.setNode(imageView);
+        translateTransition.setDuration(Duration.millis(5000));
+        translateTransition.setCycleCount(1);
+        translateTransition.setByY(y+150);
+
+        /* Starts the animation */
+        translateTransition.play();
     }
 
-    public void Animate(ImageView image, String source, int x, int y){
-        image.setImage(new Image("file:src/main/resources/Sprites/"+source+".png"));
-        generateAnimation(image, x, y);
-    }
+    /** Generates an ImageView[] with ImageView objects containing the image from sourceDirectory.
+     *  The amount of objects is set by amount and the image height and width is passed.          */
+    private ImageView[] generateImageView(String sourceDirectory, int amount, int imageHeight, int imageWidth){
+        /* ImageView[] with length of amount*/
+        ImageView[] imageViews = new ImageView[amount];
 
-    private static void generateAnimation(ImageView trashImage, int x, int y) {
-        Path path1 = new Path();
-        trashImage.setX(-x);
-        trashImage.setY(-y);
-        CubicCurveTo cubicCurveTo = new CubicCurveTo(0,0,-200,-100, x, y);
-        path1.getElements().add(new MoveTo(368,-y));
-        path1.getElements().add(cubicCurveTo);
-        PathTransition pathTransition1 = new PathTransition();
-        pathTransition1.setDuration(Duration.millis(4000));
-        pathTransition1.setNode(trashImage);
-        pathTransition1.setPath(path1);
-        pathTransition1.setCycleCount(1);
-        pathTransition1.setAutoReverse(false);
-        pathTransition1.play();
+        for (int i = 0; i < imageViews.length; i++){
+            /* Random number generation for x and y coordinates.
+            *  Number is between min/max value and Image size   */
+            Random rng = new Random();
+            int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue()+(imageWidth*2)
+                    ,game.getCurrentRoom().getMaxXValue()*2-(imageWidth-(imageWidth/2)));
+            int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue()+(imageHeight)
+                    ,game.getCurrentRoom().getMaxYValue()*2-(imageHeight-(imageHeight/2)));
+            /* ImageView object created with the given sourceDirectory as Image */
+            imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/"+sourceDirectory+".png"));
+            /* Method to animate ImageViews */
+            generateAnimation(imageViews[i],rngX,rngY);
+
+        } return imageViews;
+    }
+    /** Method to merge 4 ImageView[] into one ImageView[]
+     *  Takes 4 ImageView[] as parameter.                   **/
+    private ImageView[] uniteImageViews(ImageView[] smallPlastic,
+                                        ImageView[] mediumPlastic,
+                                        ImageView[] largePlastic,
+                                        ImageView[] deadFish) {
+        /* The sum of all array lengths */
+        int sumOfArrayLengths =   smallPlastic.length
+                                + mediumPlastic.length
+                                + largePlastic.length
+                                + deadFish.length;
+        /* New array with length of all arrays combined */
+        ImageView[] collectedImageViews = new ImageView[sumOfArrayLengths];
+
+        /* Copies the input arrays into collectedImageViews */
+        System.arraycopy(smallPlastic,0,collectedImageViews,0,
+                         smallPlastic.length);
+        System.arraycopy(mediumPlastic,0,collectedImageViews,
+                         smallPlastic.length,mediumPlastic.length);
+        System.arraycopy(largePlastic,0,collectedImageViews,
+                  smallPlastic.length+mediumPlastic.length,largePlastic.length);
+        System.arraycopy(deadFish,0,collectedImageViews,
+                  smallPlastic.length+mediumPlastic.length+largePlastic.length,deadFish.length);
+
+        return collectedImageViews;
     }
 }
