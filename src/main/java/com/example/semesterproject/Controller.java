@@ -309,22 +309,21 @@ public class Controller {
     public void quit(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         Group group = new Group();
+        /* Generating ImageView from the Image of Skipper Skrald */
+        ImageView skipperSkrald = new ImageView(new Image("file:src/main/resources/Sprites/Skipper Skrald1.png"));
+
+        /* Sets the position and size of Skipper Skrald */
+        skipperSkrald.setX(318);
+        skipperSkrald.setY(250);
+        skipperSkrald.resize(200,200);
+
+        /* Sets the position of the ship to the center */
+        ship.setX(0);
+        ship.setY(0);
+
+        /* Adds background of the lost-game screen (Current room is the background */
+        group.getChildren().addAll(background);
         if(game.isIt2050()){
-            /* Generating ImageView from the Image of Skipper Skrald */
-            ImageView skipperSkrald = new ImageView(new Image("file:src/main/resources/Sprites/Skipper Skrald1.png"));
-
-            /* Sets the position and size of Skipper Skrald */
-            skipperSkrald.setX(318);
-            skipperSkrald.setY(250);
-            skipperSkrald.resize(200,200);
-
-            /* Sets the position of the ship to the center */
-            ship.setX(0);
-            ship.setY(0);
-
-            /* Adds background of the lost-game screen (Current room is the background */
-            group.getChildren().addAll(background);
-
             /* Generating ImageView[] of the different plastic icons and the dead fish */
             ImageView[] smallPlastic = generateImageView("skraldS",100,120,200);
             ImageView[] mediumPlastic = generateImageView("skraldM",10,120,200);
@@ -354,33 +353,18 @@ public class Controller {
                 text.setFont(new Font("System Bold", 22));
                 group.getChildren().add(text);
             }
-
-            /* Adds ship and character Skipper Skrald to the group */
-            group.getChildren().addAll(ship,skipperSkrald);
-
-            /* New scene of the group */
-            Scene scene = new Scene(group);
-            /* Set the scene of the stage */
-            stage.setScene(scene);
-            /* Shows the stage */
-            stage.show();
-
         } else if (game.getScore() >= 100_000) {
-            /* Generating ImageView from the Image of Skipper Skrald */
-            ImageView skipperSkrald = new ImageView(new Image("file:src/main/resources/Sprites/Skipper Skrald1.png"));
 
-            /* Sets the position and size of Skipper Skrald */
-            skipperSkrald.setX(318);
-            skipperSkrald.setY(250);
-            skipperSkrald.resize(200,200);
-
-            /* Sets the position of the ship to the center */
-            ship.setX(0);
-            ship.setY(0);
-
-            /* Adds background of the lost-game screen (Current room is the background */
-            group.getChildren().addAll(background);
         }
+        /* Adds ship and character Skipper Skrald to the group */
+        group.getChildren().addAll(ship,skipperSkrald);
+
+        /* New scene of the group */
+        Scene scene = new Scene(group);
+        /* Set the scene of the stage */
+        stage.setScene(scene);
+        /* Shows the stage */
+        stage.show();
     }
     /** Animates the ImageView to fall down from above the window into the scene */
     private void generateAnimation(ImageView imageView, int x, int y) {
@@ -427,7 +411,7 @@ public class Controller {
                                         ImageView[] largePlastic,
                                         ImageView[] deadFish) {
         /* The sum of all array lengths */
-        int sumOfArrayLengths = smallPlastic.length
+        int sumOfArrayLengths =   smallPlastic.length
                                 + mediumPlastic.length
                                 + largePlastic.length
                                 + deadFish.length;
