@@ -226,7 +226,7 @@ public class Controller {
             removeDeadFishUI();
             viewFish = null;
         } else if(game.getDeadFishInteracted() && viewFish==null){
-            deadFishInfoRemove(infoLabel,infoBox);
+            deadFishInfoRemove(infoLabel);
         }
     }
     public void deadFishInfoBoxShow(){
