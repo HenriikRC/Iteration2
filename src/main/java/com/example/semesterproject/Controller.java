@@ -28,7 +28,7 @@ public class Controller {
     @FXML
     private Label dateLabel, scoreLabel, infoLabel;
     @FXML
-    private ImageView background, ship, minimap, viewPlastic, viewFish, infoBox;
+    private ImageView background, ship, minimap, viewPlastic, viewFish, dialogBox;
     private Group group;
     private int x = 0, y = 0;
     private Game game;
@@ -97,7 +97,7 @@ public class Controller {
             case LEFT -> left();
             case ENTER -> collect();
             case SPACE -> interact();
-            case I -> deadFishInfoRemove(infoLabel,infoBox);
+            case I -> deadFishInfoRemove(infoLabel);
             default -> {
             }
         }
@@ -119,7 +119,7 @@ public class Controller {
             if (game.getCurrentRoom().spawnDeadFish() && !game.isHarbor()) {
                 deadFishShow(group);
             }
-            group.getChildren().addAll(dateLabel, scoreLabel, minimap);
+            group.getChildren().addAll(dateLabel, scoreLabel, minimap, dialogBox);
             ship.setY(y);
             this.y = y;
             ship.setX(x);
@@ -171,7 +171,7 @@ public class Controller {
                 removePlasticUI();
             }
         } else if (game.isHarbor()){
-            disposeDone();
+            disposeDone(infoLabel);
             game.dispose();
             if(game.getScore() == 100_000){
                 quit();
@@ -182,6 +182,18 @@ public class Controller {
         updateScoreLabel();
     }
 
+    private void fullCapacityMessage() {
+        infoLabel= new Label();
+        infoLabel.setText("Du har ikke mere kapacitet, Bortskaf plast i havnen.");
+        infoLabel.setLayoutY(662);
+        infoLabel.setLayoutX(423);
+        infoLabel.setWrapText(true);
+        infoLabel.setMaxWidth(330);
+
+        infoLabel.setFont(new Font("System Bold", 15));
+        group.getChildren().add(infoLabel);
+    }
+
     public void removePlasticUI(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         group = new Group();
@@ -189,7 +201,7 @@ public class Controller {
         if(viewFish!=null && !game.getDeadFishInteracted()){
             group.getChildren().add(viewFish);
         }
-        group.getChildren().addAll(dateLabel,scoreLabel,minimap);
+        group.getChildren().addAll(dateLabel,scoreLabel,minimap,dialogBox);
         Scene scene = new Scene(group);
         scene.setOnKeyPressed(this::handle);
         (HelloApplication.getStage()).setScene(scene);
@@ -202,7 +214,7 @@ public class Controller {
     public void removeDeadFishUI(){
         background = new ImageView(new Image(game.getCurrentRoomMapDirectory()));
         group = new Group();
-        group.getChildren().addAll(background,ship);
+        group.getChildren().addAll(background,ship,dialogBox);
         if(viewPlastic!=null && !game.getIsCollected()){
             group.getChildren().add(viewPlastic);
         }
@@ -229,23 +241,20 @@ public class Controller {
         }
     }
     public void deadFishInfoBoxShow(){
-        Image info = new Image("file:src/main/resources/Sprites/dialogbox.png", 768, 150, true, true);
-
-        infoBox = new ImageView(info);
-
-        infoBox.setX(0);
-        infoBox.setY(0);
         infoLabel = new Label();
         infoLabel.setText(game.getCurrentRoom().getDeadFishDeath().getDeathReason());
         infoLabel.setAlignment(Pos.CENTER);
-        infoLabel.setLayoutY(20);
-        infoLabel.setLayoutX(160);
+        infoLabel.setLayoutY(662);
+        infoLabel.setLayoutX(423);
+        infoLabel.setWrapText(true);
+        infoLabel.setMaxWidth(330);
 
-        infoLabel.setFont(new Font("System Bold", 22));
-        group.getChildren().addAll(infoBox,infoLabel);
+        infoLabel.setFont(new Font("System Bold", 15));
+        group.getChildren().add(infoLabel);
+
     }
-    public void deadFishInfoRemove(Label label, ImageView im){
-        group.getChildren().removeAll(label,im);
+    public void deadFishInfoRemove(Label label){
+        group.getChildren().removeAll(label);
     }
 
 
@@ -256,28 +265,31 @@ public class Controller {
     public boolean checkPlasticPlacement() {
         return ship.getBoundsInParent().intersects(viewPlastic.getBoundsInParent());
     }
-    public void disposeDone(){
-        Text disposed = new Text("Du har genbrugt " + game.getShipCapacity()+ " tons plastik. Din score i alt er nu: "
+    public void disposeDone(Label label){
+        group.getChildren().remove(label);
+        infoLabel = new Label();
+        infoLabel.setText("Du har genbrugt " + game.getShipCapacity()+ " tons plastik. Din score i alt er nu: "
                 +(game.getScore()+ game.getShipCapacity()));
-        disposed.setFill(Color.web("#FFFFFF"));
-        disposed.setStrokeWidth(1);
-        disposed.setStroke(Color.web("000000"));
-        disposed.setLayoutY(605);
-        disposed.setLayoutX(80);
-        disposed.setFont(new Font("System Bold", 22));
-        group.getChildren().add(disposed);
+        infoLabel.setLayoutY(662);
+        infoLabel.setLayoutX(423);
+        infoLabel.setWrapText(true);
+        infoLabel.setMaxWidth(330);
+
+        infoLabel.setFont(new Font("System Bold", 15));
+        group.getChildren().add(infoLabel);
     }
-    public void upgradeDone(){
-        Text upgraded = new Text(
-                "Du har gjordt et fantastisk arbejde!" +"\n"+"FN har sponsorert en opgradering til dit skib."+ "\n"+
-                        "Du kan nu laste dit skib med " +game.getShipCapacityMax()+ " tons");
-        upgraded.setFill(Color.web("#FFFFFF"));
-        upgraded.setStrokeWidth(1);
-        upgraded.setStroke(Color.web("000000"));
-        upgraded.setLayoutY(655);
-        upgraded.setLayoutX(200);
-        upgraded.setFont(new Font("System Bold", 22));
-        group.getChildren().add(upgraded);
+    public void upgradeDone(Label label){
+        group.getChildren().remove(label);
+        infoLabel = new Label();
+        infoLabel.setText("Du har gjordt et fantastisk arbejde!" +"\n"+"FN har sponsorert en opgradering til dit skib."
+                + "\n"+ "Du kan nu laste dit skib med " +game.getShipCapacityMax()+ " tons");
+        infoLabel.setLayoutY(662);
+        infoLabel.setLayoutX(423);
+        infoLabel.setWrapText(true);
+        infoLabel.setMaxWidth(330);
+
+        infoLabel.setFont(new Font("System Bold", 15));
+        group.getChildren().add(infoLabel);
     }
 
     public void upgradeShip(){
@@ -290,7 +302,7 @@ public class Controller {
         } else {
             upgradeShip();
             updateScoreLabel();
-            upgradeDone();
+            upgradeDone(infoLabel);
         }
     }
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.semesterproject.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.semesterproject.Controller">
    <children>
       <Label fx:id="dateLabel" alignment="CENTER_RIGHT" layoutX="531.0" layoutY="14.0" prefHeight="30.0" prefWidth="234.0">
          <font>
@@ -27,5 +26,11 @@
             <Image url="@../../../Icons/minimap.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="dialogBox" fitHeight="112.0" fitWidth="366.0" layoutX="401.0" layoutY="648.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Sprites/dialogbox.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="423.0" layoutY="662.0" prefHeight="82.0" prefWidth="330.0" text="Sejle ud med dit skib (piletasterne), indsamle plast (enter) og sejle tilbage til havnen og bortskaf plasten (enter). Møder du en fisk kan du interagerer med den (mellemrumstast). Held og lykke Skipper!" wrapText="true" />
    </children>
 </AnchorPane>
