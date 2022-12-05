@@ -32,10 +32,7 @@ public class DeadFish implements Spawnable {
         Random random = new Random();
         int chance = random.nextInt(101);
         chance = chance +1;
-        if(chance<50){
-            return true;
-        }
-        else return false;
+        return chance < 50;
     }
 
     /** Handles the random picking of a deathreason for the DeadFish object */

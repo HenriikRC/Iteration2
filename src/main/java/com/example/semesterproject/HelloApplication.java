@@ -16,13 +16,12 @@ import java.io.IOException;
 import worldOfZuul.*;
 
 public class HelloApplication extends Application {
-    private static Stage stage;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
         Parent root = loader.load();
         Controller controller = loader.getController();
-        this.stage = stage;
+        controller.setStage(stage);
         controller.setGame(new Game());
 
         Image bg = new Image("file:src/main/resources/MapFiles/havn.png");
@@ -46,7 +45,7 @@ public class HelloApplication extends Application {
         };
 
         startLabel.setOnMouseClicked(handleRemove);
-       //g.getChildren().add(shipViewer);
+
         Scene sc = new Scene(group);
         stage.setScene(sc);
 
@@ -55,8 +54,6 @@ public class HelloApplication extends Application {
         stage.setScene(sc);
         stage.show();
 
-
-//        sc.getOnMouseClicked(new EventHandler<mouseevent>())
         sc.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -71,10 +68,6 @@ public class HelloApplication extends Application {
                 }
             }
         });
-    }
-
-    public static Stage getStage() {
-        return stage;
     }
     public void remove(Group group, Label label){
         group.getChildren().remove(label);

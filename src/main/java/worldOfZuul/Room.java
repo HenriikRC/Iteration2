@@ -79,13 +79,13 @@ public class Room
     public boolean spawnPlastic(){
 //      Metode der laver plastik objekt, kører spawnchance og herefter gemmer tilfældig mængde i "currentPlastic" og retunere "amount".
         Plastic plastic = new Plastic();
-        if(plastic.spawnChance() == true){
+        if(plastic.spawnChance()){
             plastic.spawn();
             this.amountPlastic = plastic.getAmount();
             this.currentPlastic = plastic;
             return true;
         }
-        else if (plastic.spawnChance() == false){
+        else if (!plastic.spawnChance()){
             this.amountPlastic = 0;
             this.currentPlastic = null;
             return false;
@@ -160,11 +160,7 @@ public class Room
     }
 
     public boolean checkRoom(){
-    if(getShortDescription()=="nu i havnen") {
-            return true;
-        } else {
-            return false;
-        }
+        return getShortDescription() == "nu i havnen";
     }
 }
 

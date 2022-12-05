@@ -28,7 +28,7 @@ public class Game {
             skipperSkrald.setCapacityMax(14_000);
         } else if (getScore() > 24_000) {
             skipperSkrald.setCapacityMax(12_000);
-        } else if (getScore() > 14_000) {
+        } else if (getScore() > 12_000) {
             skipperSkrald.setCapacityMax(10_000);
         } else if (getScore() > 6_000) {
             skipperSkrald.setCapacityMax(8_000);
@@ -232,11 +232,7 @@ public class Game {
 
     /** Carries the logic for the QUIT command */
     public boolean quit(Command command) {
-        if (command.hasCommandValue()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !command.hasCommandValue();
     }
 
     /** Carries the logic for the DISPOSE command */
@@ -263,9 +259,7 @@ public class Game {
 
     /** Function to check if the gameDate is currently 2050 or the current move will make it so */
     public boolean isIt2050() {
-        if(gameDate.compareTo(new Date(149,10,29)) >= 0) {
-            return true;
-        } else return false;
+        return gameDate.compareTo(new Date(149, 10, 29)) >= 0;
     }
 
     /** Calculates and increments the date of the game */
