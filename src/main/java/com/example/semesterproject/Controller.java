@@ -248,13 +248,13 @@ public class Controller {
 
     public void disposeDone(Label label){
         if(game.getShipCapacity()>0) {
+            group.getChildren().remove(upgradeAvailable);
             group.getChildren().remove(label);
             infoLabel = new Label();
             infoLabel.setText("Du har genbrugt " + game.getShipCapacity() + " tons plastik. Din score i alt er nu: "
                     + (game.getScore() + game.getShipCapacity()));
             infoLabel = formatLabel(infoLabel, 662);
             group.getChildren().add(infoLabel);
-
             animateDispose();
 
         }
