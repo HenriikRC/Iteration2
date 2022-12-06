@@ -358,6 +358,10 @@ public class Controller {
                 group.getChildren().add(text);
             }
         } else if (game.getScore() >= 100_000) {
+            ImageView[] happyFish = generateImageView("happyFish",100,64,64);
+            for(ImageView imageView:happyFish){
+                group.getChildren().add(imageView);
+            }
             Text text1 = new Text(100,23,"Du nåede at indsamle 100.000 tons plastik inden år 2050!" +
                                                  "\n Allerede i " + game.getGameDateMessage() + " havde du indsamlet " + game.getScore() + " tons!");
             text1.setFill(Color.web("#000000"));
@@ -399,20 +403,27 @@ public class Controller {
         /* ImageView[] with length of amount*/
         ImageView[] imageViews = new ImageView[amount];
 
-        for (int i = 0; i < imageViews.length; i++){
-            /* Random number generation for x and y coordinates.
-            *  Number is between min/max value and Image size   */
-            Random rng = new Random();
-            int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue()+(imageWidth*2)
-                    ,game.getCurrentRoom().getMaxXValue()*2-(imageWidth-(imageWidth/2)));
-            int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue()+(imageHeight)
-                    ,game.getCurrentRoom().getMaxYValue()*2-(imageHeight-(imageHeight/2)));
-            /* ImageView object created with the given sourceDirectory as Image */
-            imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/"+sourceDirectory+".png"));
-            /* Method to animate ImageViews */
-            generateAnimation(imageViews[i],rngX,rngY);
 
-        } return imageViews;
+        for (int i = 0; i < imageViews.length; i++){
+            Random rng = new Random();
+            if(!Objects.equals(sourceDirectory, "happyFish")) {
+                /* Random number generation for x and y coordinates.
+                 *  Number is between min/max value and Image size   */
+                int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue() + (imageWidth * 2)
+                        , game.getCurrentRoom().getMaxXValue() * 2 - (imageWidth - (imageWidth / 2)));
+                int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue() + (imageHeight)
+                        , game.getCurrentRoom().getMaxYValue() * 2 - (imageHeight - (imageHeight / 2)));
+                /* ImageView object created with the given sourceDirectory as Image */
+                imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/" + sourceDirectory + ".png"));
+                /* Method to animate ImageViews */
+                generateAnimation(imageViews[i], rngX, rngY);
+            } else {
+                int rngX = rng.nextInt(318,604);
+                int rngY = rng.nextInt(0,534);
+                imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/" + sourceDirectory + ".png"));
+                generateAnimation(imageViews[i],rngX,rngY);
+            }
+            } return imageViews;
     }
     /** Method to merge 4 ImageView[] into one ImageView[]
      *  Takes 4 ImageView[] as parameter.                   **/
