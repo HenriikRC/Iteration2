@@ -4,13 +4,19 @@ import java.util.Random;
 
 public class DeadFish implements Spawnable {
     private String deathReason;
-    private ArrayList<String> reasons = new ArrayList<>(); {    //Creates an arraylist for the causes of death
-        reasons.add("Fisken er viklet ind i en fiskesnor og er druknet");
-        reasons.add("Fisken har fået plastik i spiserøret og er død af sult");
-        reasons.add("Fisken er fanget i et uloveligt fiskenet");
-        reasons.add("Fisken har viklet sig ind i en plasitkpose\nog er druknet");
-        reasons.add("Fisken har troet plastik var mad og er død af sult");
-        reasons.add("Fisken har noget om kroppen og er\nblevet for tung til at følge med sin stime");
+    private ArrayList<String> reasons = new ArrayList<>(); {    //Creates an arraylist for plastic information
+        reasons.add("Estimeret er der 300k hvaler, delfiner og marsvin der dør årligt grundet forladte fiskenet\nfauna-flora.org");
+        reasons.add("I 2019 blev en strandet hval fundet med 40kg. plastik i maven (Hovedsagligt bestående af engangsplastikposer)\nfauna-flora.org");
+        reasons.add("Havskildpadder tager ofte fejl af plastikposer og fiskenet da det ligner vandmænd og tang som er deres mest normale kost\nfauna-flora.org");
+        reasons.add("Når havskildpadder spiser plastik får det dem til at føle sig mæt som resultere i sult\nfauna-flora.org");
+        reasons.add("Ifølge en samling af 100 undersøgelser indeholdende 500 arter af fisk har 2/3 indtaget mikroplastik\nfauna-flora.org");
+        reasons.add("100% af muslinger fanget i United Kingdoms hav indeholder mikroplastik\nfauna-flora.org");
+        reasons.add("100 millioner havdyr dør årligt grundet plastik\ncondorferries.co.uk");
+        reasons.add("I de sidste 10 år har vi fremstillet mere plastik end det sidste århundrede! " +
+                    "I år 2050 vil der estimeret være mere plastik end fisk i havet\ncondorferries.co.uk");
+        reasons.add("Der er estimeret til at være 5,25 trillioner stykker plastik i havet\ncondorferries.co.uk");
+        reasons.add("70% af plastik synker ned i havets økosystem, 15% flyder på havoverfladen og 15% lander på vores strande igen\ncondorferries.co.uk");
+        reasons.add("Plastik tager mellem 500-1000 år for at nedbryde. Vi sender 79% af alt plastikaffald til losseplader i havet eller på land\ncondorferries.co.uk");
     }
 
 
@@ -39,7 +45,7 @@ public class DeadFish implements Spawnable {
     @Override
     public void spawn() {
         Random rng = new Random();
-        int random = rng.nextInt(6);
+        int random = rng.nextInt(reasons.size());
         setDeathReason(reasons.get(random));
     }
     @Override
