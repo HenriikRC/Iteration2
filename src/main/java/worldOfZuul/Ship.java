@@ -4,21 +4,14 @@ import java.util.ArrayList;
 
 public class Ship {
 
-
+                                    /* Attributes */
     private ArrayList<Spawnable> inventory;
     private int capacityMax;
     private int capacity;
 
 
-                        /* Constructor, Accesor and Mutator Methods */
-    public Ship() {
-        //Creates a list
-        this.inventory = new ArrayList<Spawnable>();
-        //Sets the maximum capacity of the ship.
-        this.capacityMax = 6000;
-        //Sets the current capacity of the ship.
-        this.capacity = 0;
-    }
+                                    /* Accessor Methods */
+
     public int getCapacity(){
         return this.capacity;
     }
@@ -26,14 +19,20 @@ public class Ship {
         return this.capacityMax;
     }
 
+
+
+                                    /* Mutator Methods */
     public void setCapacityMax(int capacityMax){
         this.capacityMax = capacityMax;
     }
 
 
                                 /* Methods and Functions */
-    public ArrayList<Spawnable> getInventory() {
-        return inventory;
+
+    public Ship() {
+        this.inventory = new ArrayList<Spawnable>();
+        this.capacityMax = 6000;
+        this.capacity = 0;
     }
 
     /** Method to reset the current capcity of the ship to 0 */
@@ -55,9 +54,8 @@ public class Ship {
     /** Handles the disposal of plastic from the players inventory */
     public int disposePlastic() {
         int amountOfPlastic = 0;
-        for (Spawnable item : inventory) {  // Iterates through a list of Spawnable
-            if (item instanceof Plastic) {  // and for every instance of plastic items, it sets the
-                                            // amountOfPlastic
+        for (Spawnable item : inventory) {
+            if (item instanceof Plastic) {
                 amountOfPlastic = amountOfPlastic + ((Plastic)item).getAmount();
             }
         }

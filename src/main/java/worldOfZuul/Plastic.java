@@ -6,28 +6,29 @@ public class Plastic implements Spawnable{
     private int amount;
     private boolean spawnChanceBoolean;
 
-                        /* Constructor, Accesor and Mutator Methods */
-    //Constructor for Plastic objects
-    public Plastic (){
-        this.amount = 0;
-    }
-    //Mutator method for Plastic object
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-    //Accesor method for Plastic object
+                                /* Accessor Methods */
+
     public int getAmount() {
         return amount;
+    }
+
+
+
+                               /* Mutator Methods */
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
     public void setSpawnChance(boolean bool){
         spawnChanceBoolean = bool;
     }
-    public boolean getSpawnChance(){
-        return spawnChanceBoolean;
-    }
+
 
 
                                 /* Methods and Functions */
+
+    public Plastic (){
+        this.amount = 0;
+    }
     /** Calculates the spawnChance of a Plastic object in a room */
     @Override
     public boolean spawnChance(){

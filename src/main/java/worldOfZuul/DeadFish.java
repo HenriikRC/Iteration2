@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class DeadFish implements Spawnable {
+
+                                        /* Attributes */
     private String deathReason;
-    private ArrayList<String> reasons = new ArrayList<>(); {    //Creates an arraylist for plastic information
+    private ArrayList<String> reasons = new ArrayList<>(); {
         reasons.add("Estimeret er der 300k hvaler, delfiner og marsvin der dør årligt grundet forladte fiskenet" +
                 "\nfauna-flora.org");
         reasons.add("I 2019 blev en strandet hval fundet med 40kg. plastik i maven " +
@@ -41,21 +43,26 @@ public class DeadFish implements Spawnable {
     }
 
 
-    public DeadFish() {                     //Constructor for the DeadFish class
-        this.deathReason = "";
-    }
-    public String getDeathReason() {        //Accesor method for deathReason
+                                            /* Accessor Methods */
+    public String getDeathReason() {
         return deathReason;
     }
+
+
+                                            /* Mutator Methods */
     public void setDeathReason(String deathReason) {
-        this.deathReason = deathReason;     //Mutator method for deathReason
+        this.deathReason = deathReason;
     }
 
 
-                                            /* Methods and Funtions */
+                                            /* Methods and Functions */
+    public DeadFish() {
+        this.deathReason = "";
+    }
+
     /** Calculates the spawnChance of a DeadFish object in a room */
     @Override
-    public boolean spawnChance(){       //Calculates the spawnchance of a DeadFish object in a room
+    public boolean spawnChance(){
         Random random = new Random();
         int chance = random.nextInt(101);
         chance = chance +1;

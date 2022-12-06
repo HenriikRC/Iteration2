@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Calendar;
 
 public class Game {
-
+                                        /* Attributes */
     private Room currentRoom;                           // Points towards the current room object.
     private CommandWords commands;
     private boolean isCollected;                        // True if plastic in current room has been collected once.
@@ -17,13 +17,90 @@ public class Game {
     private Room aboveHarbor;
     private int amountOfInteractions;
     private int z = 10;
+
+
+                                        /* Accessor Methods */
+    public boolean getDeadFishInteracted(){
+        return deadFishInteracted;
+    }
     public int getZ(){
         return z;
     }
     public Room getAboveHarbor() {
         return aboveHarbor;
     }
+    public String getRoomDescription() {                    //Accessor method for the description of a room
+        return currentRoom.getLongDescription();
+    }
+    public String getNavigation() {                         //Accessor method for the navigation
+        return currentRoom.getWhereToSailNext();
+    }
+    public List<String> getCommandDescriptions() {          //Accessor method for commands
+        return commands.getCommandWords();
+    }
+    public int getAmountOfInteractions() {
+        return amountOfInteractions;
+    }
+    public void incrementAmountOfInteractions() {
+        this.amountOfInteractions++;
+    }
+    public int getShipCapacity(){                           //Accessor method to return the current used capacity on the ship.
+        return skipperSkrald.getCapacity();
+    }
+    public int getShipCapacityMax(){
+        return skipperSkrald.getCapacityMax();
+    }
+    public boolean getIsCollected(){                        //Accessor method for the is collected boolean
+        return isCollected;
+    }
+    public Room getCurrentRoom(){
+        return currentRoom;
+    }
+    public String getCurrentRoomMapDirectory(){
+        return currentRoom.getMapDirectory();
+    }
+    public long getScore(){                                 // Returns the score
+        Harbor currentHarbor = (Harbor)gameHarbor;
+        if(currentRoom.isHarbor()){
+            currentHarbor = (Harbor)currentRoom;
+        } return ((long)currentHarbor.getScore());
+    }
+    public String getGameDateMessage(){
+        String[] months = {"Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli",  // String array of all the months
+                "August", "September", "Oktober", "November", "December"};
+        Calendar oneMonth = Calendar.getInstance();                                       // Making calender object oneMonth
+        oneMonth.setTime(gameDate);                                                       // Setting time of the object to current gameDate
+        oneMonth.add(Calendar.MONTH,+1);                                           // Increments with one month
+        String message = months[oneMonth.get(Calendar.MONTH)] + " " + oneMonth.get(Calendar.YEAR); // Prints current month
+        return message;
+    }
+    public void getDeathReason() {           //Accessor method for deathReason of a DeadFish object
+        System.out.println(currentRoom.getDeadFishDeath());
+        deadFishInteracted = true;
+    }
+    public Command getCommand(String word1, String word2) { //???
+        return new CommandImplementation(commands.getCommand(word1), word2);
+    }
 
+
+
+
+
+                                        /* Mutator Methods */
+    public void setIsCollected(boolean isCollected) {       //Mutator method for IsCollected
+        this.isCollected = isCollected;
+    }
+
+
+
+
+
+                                    /* Methods and Functions */
+
+    public Game() {                                     // Constructor for the game class
+        createRooms();                                  // Creates the rooms in the game
+        commands = new CommandWordsImplementation();
+    }
     public void upgradeShip() {
 
         if (amountOfInteractions >= 22 && skipperSkrald.getCapacity()<14_000) {
@@ -40,51 +117,59 @@ public class Game {
             z = 12;
         }
     }
-    public Game() {                                     // Constructor for the game class
-        createRooms();                                  // Creates the rooms in the game
-        commands = new CommandWordsImplementation();
-    }
 
     /** Creates the rooms of the game, 19 of which are ocean rooms, 6 are islands and one Harbor */
     private void createRooms() {
         Room A1, A2, A3, A4, A5;
-        Room B1, B2, B3, B4, B5;
-        Room C1, C2, C3, C4, C5;
-        Room D1, D2, D3, D4, D5;
-        Room E1, E2, E3, E4, E5;
+        Room B1, B3, B4, B5;
+        Room C1, C3;
+        Room D1, D3, D4, D5;
+        Room E1, E3, E4, E5;
         Room Harbor;
 
         // 19 ocean rooms as objects of Room.
-        A1 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A1.png",-274,384,-274,384,30,663);
-        A2 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A2.png",-384,384,-274,274,48,663);
-        A3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384,66,663);
-        A4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384,82,663);
-        A5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",-384,274,-274,384,97,663);
-        B1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384,30,680);
-        B3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",-274,384,-384,384,66,680);
-        B4 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B4-E4.png",-384,384,-384,274,82,680);
-        B5 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B5-E5.png",-384,274,-384,274,97,680);
-        C1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384,30,697);
-        C3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384,66,697);
-        D1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",-274,274,-384,384,30,714);
-        D3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",-274,384,-384,384,66,714);
-        D4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",-384,384,-274,384,82,714);
-        D5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",-384,274,-274,384,97,714);
-        E1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/E1.png",-274,274,-384,274,30,730);
-        E3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/E3.png",-274,384,-384,384,66,730);
-        E4 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B4-E4.png",-384,384,-384,274,82,730);
-        E5 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B5-E5.png",-384,274,-384,274,97,730);
-
-        // 6 islands rooms created as objects of Room
-        B2 = new Room("strandet på en ø");
-        C2 = new Room("strandet på en ø");
-        C4 = new Room("strandet på en ø");
-        C5 = new Room("strandet på en ø");
-        D2 = new Room("strandet på en ø");
-        E2 = new Room("strandet på en ø");
+        A1 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A1.png",
+                -274,384,-274,384,30,663);
+        A2 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/A2.png",
+                -384,384,-274,274,48,663);
+        A3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/A3-A4-D4.png",
+                -384,384,-274,384,66,663);
+        A4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",
+                -384,384,-274,384,82,663);
+        A5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",
+                -384,274,-274,384,97,663);
+        B1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",
+                -274,274,-384,384,30,680);
+        B3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",
+                -274,384,-384,384,66,680);
+        B4 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B4-E4.png",
+                -384,384,-384,274,82,680);
+        B5 = new Room("ude på havet", "øst","file:src/main/resources/MapFiles/B5-E5.png",
+                -384,274,-384,274,97,680);
+        C1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",
+                -274,274,-384,384,30,697);
+        C3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",
+                -274,274,-384,384,66,697);
+        D1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/B1-C1-C3-D1.png",
+                -274,274,-384,384,30,714);
+        D3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/B3-D3.png",
+                -274,384,-384,384,66,714);
+        D4 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A3-A4-D4.png",
+                -384,384,-274,384,82,714);
+        D5 = new Room("ude på havet", "vest eller syd","file:src/main/resources/MapFiles/A5-D5.png",
+                -384,274,-274,384,97,714);
+        E1 = new Room("ude på havet", "nord","file:src/main/resources/MapFiles/E1.png",
+                -274,274,-384,274,30,730);
+        E3 = new Room("ude på havet", "syd","file:src/main/resources/MapFiles/E3.png",
+                -274,384,-384,384,66,730);
+        E4 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B4-E4.png",
+                -384,384,-384,274,82,730);
+        E5 = new Room("ude på havet", "vest","file:src/main/resources/MapFiles/B5-E5.png",
+                -384,274,-384,274,97,730);
 
         //Changed Object type from Room to Harbor
-        Harbor = new Harbor("nu i havnen","Du er i havnen","file:src/main/resources/MapFiles/havn.png",-100,120,-384,150,66,742);
+        Harbor = new Harbor("nu i havnen","Du er i havnen","file:src/main/resources/MapFiles/havn.png",
+                -100,120,-384,150,66,742);
         gameHarbor = Harbor;
 
         // Setting exits for all the rooms
@@ -158,59 +243,6 @@ public class Game {
         currentRoom = Harbor;
         aboveHarbor = E3;
     }
-
-
-                                        /* Accessor Methods */
-    public boolean getDeadFishInteracted(){
-        return deadFishInteracted;
-    }
-    public void getDeathReason() {           //Accessor method for deathReason of a DeadFish object
-        System.out.println(currentRoom.getDeadFishDeath());
-        deadFishInteracted = true;
-    }
-    public String getRoomDescription() {                    //Accessor method for the description of a room
-        return currentRoom.getLongDescription();
-    }
-    public String getNavigation() {                         //Accessor method for the navigation
-        return currentRoom.getWhereToSailNext();
-    }
-    public List<String> getCommandDescriptions() {          //Accessor method for commands
-        return commands.getCommandWords();
-    }
-    public Command getCommand(String word1, String word2) { //???
-        return new CommandImplementation(commands.getCommand(word1), word2);
-    }
-    public int getAmountOfInteractions() {
-        return amountOfInteractions;
-    }
-    public void incrementAmountOfInteractions() {
-        this.amountOfInteractions++;
-    }
-    public int getShipCapacity(){                           //Accessor method to return the current used capacity on the ship.
-        return skipperSkrald.getCapacity();
-    }
-    public int getShipCapacityMax(){
-        return skipperSkrald.getCapacityMax();
-    }
-    public boolean getIsCollected(){                        //Accessor method for the is collected boolean
-        return isCollected;
-    }
-    public long getScore(){                                 // Returns the score
-        Harbor currentHarbor = (Harbor)gameHarbor;
-        if(currentRoom.isHarbor()){
-            currentHarbor = (Harbor)currentRoom;
-        } return ((long)currentHarbor.getScore());
-    }
-
-
-                                        /* Mutator Methods */
-    public void setIsCollected(boolean isCollected) {       //Mutator method for IsCollected
-        this.isCollected = isCollected;
-    }
-
-
-
-                                    /* Methods and Functions */
     public boolean isHarbor() {                             //???
         return currentRoom.isHarbor();
     }
@@ -257,7 +289,8 @@ public class Game {
 
     /** Carries the logic for the COLLECT command */
     public boolean collect(){
-        if (!isCollected && currentRoom.getCurrentPlastic().getAmount() < (skipperSkrald.getCapacityMax()- skipperSkrald.getCapacity())) {
+        if (!isCollected && currentRoom.getCurrentPlastic().getAmount() <
+                            (skipperSkrald.getCapacityMax()- skipperSkrald.getCapacity())) {
             skipperSkrald.collectPlastic(currentRoom.getCurrentPlastic());
             isCollected = true;
             currentRoom.getCurrentPlastic().setSpawnChance(false);
@@ -268,16 +301,6 @@ public class Game {
     /** Function to check if the gameDate is currently 2050 or the current move will make it so */
     public boolean isIt2050() {
         return gameDate.compareTo(new Date(149, 10, 29)) >= 0;
-    }
-
-    public String getGameDateMessage(){
-        String[] months = {"Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli",  // String array of all the months
-                "August", "September", "Oktober", "November", "December"};
-        Calendar oneMonth = Calendar.getInstance();                                       // Making calender object oneMonth
-        oneMonth.setTime(gameDate);                                                       // Setting time of the object to current gameDate
-        oneMonth.add(Calendar.MONTH,+1);                                           // Increments with one month
-        String message = months[oneMonth.get(Calendar.MONTH)] + " " + oneMonth.get(Calendar.YEAR); // Prints current month
-        return message;
     }
 
     /** Method for next move used when a player moves on the ocean */
@@ -293,15 +316,5 @@ public class Game {
         isCollected = false;
         deadFishInteracted = false;
     }
-
-    public Room getCurrentRoom(){
-        return currentRoom;
-    }
-
-    public String getCurrentRoomMapDirectory(){
-        return currentRoom.getMapDirectory();
-    }
-
-
 }
 

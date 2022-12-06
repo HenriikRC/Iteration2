@@ -6,61 +6,84 @@ import java.util.HashMap;
 
 public class Room 
 {
-    private String description;
-    private String whereToSailNext;
+                                        /* Attributes */
+    private String description, whereToSailNext, mapDirectory;
     private HashMap<String, Room> exits;
     private Plastic currentPlastic;
-    private int amountPlastic;
     private DeadFish deadFishDeath;
     private boolean isFishDead;
-    private int minXValue;
-    private int maxXValue;
-    private int minYValue;
-    private int maxYValue;
-    private int mapMarkerX;
-    private int mapMarkerY;
+    private int minXValue, maxXValue, minYValue, maxYValue, mapMarkerX, mapMarkerY, amountPlastic;
+
+
+                                        /* Accessor Methods */
     public int getMapMarkerX(){
         return mapMarkerX;
     }
     public int getMapMarkerY(){
         return mapMarkerY;
     }
-
     public int getMaxXValue() {
         return maxXValue;
     }
-
     public int getMaxYValue() {
         return maxYValue;
     }
-
     public int getMinXValue() {
         return minXValue;
     }
-
     public int getMinYValue() {
         return minYValue;
     }
-
-    private String mapDirectory;
     public String getMapDirectory(){
         return mapDirectory;
     }
-    public Room(){
-        this.description = "Dette rum er tomt";
-    }
-    public Room(String description)
+    public DeadFish getDeadFishDeath() {return deadFishDeath;}
+    public Plastic getCurrentPlastic() {return currentPlastic;}
+    public String getShortDescription() {return description;}
+    public Room getExit(String direction)
     {
-        this.description = description;
-        exits = new HashMap<String, Room>();
+        return exits.get(direction);
     }
-    public Room(String description, String whereToSailNext,String mapDirectory)
+    public String getWhereToSailNext() {
+        return "Den hurtigste vej til havnen er: " + whereToSailNext + ", det tog lang tid at undersøge.";}
+    public String getLongDescription() {
+        int plastic = this.amountPlastic;
+        boolean fish = this.isFishDead;
+        if (checkRoom()) {
+            return "Du er " + description + "\n" + getExitString(); }
+        else if(plastic <= 0 && !fish){
+            return "Du er " + description + ". Der er intet andet end vand" +"\n" + getExitString();}
+        else if (plastic <= 0 && fish) {
+            return "Du er " + description + ". Der er en død fisk. For at undersøge skriv >info< "
+                    +"\n" + getExitString();}
+        else if (plastic > 0 && fish) {
+            return "Du er " + description + ". Der er en død fisk. For at undersøge skriv >info<"
+                    +"\n" +"Der er " +plastic+ " tons plastik i vandet. >indsaml< "+"\n" + getExitString();}
+        else if (plastic > 0 && !fish) {
+            return "Du er " + description + ". Der er " +plastic+ " tons plastik i vandet. >indsaml< "
+                    +"\n" + getExitString();}
+
+        return "fejl i indlæsning af område";
+    }
+    private String getExitString()
     {
-        this.whereToSailNext = whereToSailNext;
-        this.description = description;
-        this.mapDirectory = mapDirectory;
-        exits = new HashMap<String, Room>();
+        String returnString = "Udveje:";
+        Set<String> keys = exits.keySet();
+        for(String exit : keys) {
+            returnString += " " + exit;
+        }
+        return returnString;
     }
+
+
+
+                                            /* Mutator Methods */
+
+    public void setExit(String direction, Room neighbor) {exits.put(direction, neighbor);}
+
+
+
+                                            /* Methods and Functions */
     public Room(String description, String whereToSailNext,String mapDirectory,int minXValue, int maxXValue, int minYValue, int maxYValue, int mapMarkerX, int mapMarkerY)
     {
         this.whereToSailNext = whereToSailNext;
@@ -75,9 +98,7 @@ public class Room
         exits = new HashMap<String, Room>();
     }
 
-    boolean spawned;
     public boolean spawnPlastic(){
-//      Metode der laver plastik objekt, kører spawnchance og herefter gemmer tilfældig mængde i "currentPlastic" og retunere "amount".
         Plastic plastic = new Plastic();
         if(plastic.spawnChance()){
             plastic.spawn();
@@ -92,9 +113,6 @@ public class Room
         }
         return false;
     }
-    public Plastic getCurrentPlastic() {return currentPlastic;}
-    public String getWhereToSailNext() {
-        return "Den hurtigste vej til havnen er: " + whereToSailNext + ", det tog lang tid at undersøge.";}
 
     public boolean spawnDeadFish(){
         DeadFish fish = new DeadFish();
@@ -110,53 +128,8 @@ public class Room
             return false;}
     }
 
-    public DeadFish getDeadFishDeath() {return deadFishDeath;}
-    public void setExit(String direction, Room neighbor) {exits.put(direction, neighbor);}
-    public String getShortDescription() {return description;}
-
-    public String getLongDescription() {
-        int plastic = this.amountPlastic;
-        boolean fish = this.isFishDead;
-//      Hvis man er på havnen
-        if (checkRoom()) {
-            return "Du er " + description + "\n" + getExitString(); }
-//        Hvis der er hverken fisk eller plast
-        else if(plastic <= 0 && !fish){
-            return "Du er " + description + ". Der er intet andet end vand" +"\n" + getExitString();}
-//        Hvis der er fisk men ikke plast
-        else if (plastic <= 0 && fish) {
-            return "Du er " + description + ". Der er en død fisk. For at undersøge skriv >info< "
-                    +"\n" + getExitString();}
-//        Hvis der er fisk og plast
-        else if (plastic > 0 && fish) {
-            return "Du er " + description + ". Der er en død fisk. For at undersøge skriv >info<"
-                    +"\n" +"Der er " +plastic+ " tons plastik i vandet. >indsaml< "+"\n" + getExitString();}
-//        Hvis der ikke er fisk men der er plastik
-        else if (plastic > 0 && !fish) {
-            return "Du er " + description + ". Der er " +plastic+ " tons plastik i vandet. >indsaml< "
-                    +"\n" + getExitString();}
-
-        return "fejl i indlæsning af område";
-    }
-
-
     public boolean isHarbor() {
         return false;
-    }
-
-    private String getExitString()
-    {
-        String returnString = "Udveje:";
-        Set<String> keys = exits.keySet();
-        for(String exit : keys) {
-            returnString += " " + exit;
-        }
-        return returnString;
-    }
-
-    public Room getExit(String direction) 
-    {
-        return exits.get(direction);
     }
 
     public boolean checkRoom(){
