@@ -31,12 +31,6 @@ public class Controller {
     private Stage stage;
     private int x = 0, y = 0;
     private Game game;
-    private int amountOfInteractions;
-
-    public int getAmountOfInteractions() {
-        return amountOfInteractions;
-    }
-
     public void setGame(Game game){
         this.game = game;
         dateLabel.setText(game.getGameDateMessage());

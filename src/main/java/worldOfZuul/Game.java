@@ -22,13 +22,13 @@ public class Game {
 
     public void upgradeShip() {
 
-        if (amountOfInteractions >= 22) {
+        if (amountOfInteractions >= 22 && skipperSkrald.getCapacity()<14_000) {
             skipperSkrald.setCapacityMax(14_000);
-        } else if (amountOfInteractions >= 14) {
+        } else if (amountOfInteractions >= 14 && skipperSkrald.getCapacity()<12_000) {
             skipperSkrald.setCapacityMax(12_000);
-        } else if (amountOfInteractions >= 8) {
+        } else if (amountOfInteractions >= 8 && skipperSkrald.getCapacity()<10_000) {
             skipperSkrald.setCapacityMax(10_000);
-        } else if (amountOfInteractions >= 3) {
+        } else if (amountOfInteractions >= 3 && skipperSkrald.getCapacity()<8_000) {
             skipperSkrald.setCapacityMax(8_000);
         }
     }
