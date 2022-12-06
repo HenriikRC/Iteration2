@@ -1,5 +1,8 @@
 package com.example.semesterproject;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.PathTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -9,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -256,8 +260,49 @@ public class Controller {
                     + (game.getScore() + game.getShipCapacity()));
             infoLabel = formatLabel(infoLabel, 662);
             group.getChildren().add(infoLabel);
+
+            animateDispose();
+
         }
     }
+
+    private void animateDispose() {
+        ImageView imageView = new ImageView(new Image("file:src/main/resources/Sprites/skraldL.png"));
+        imageView.setLayoutY(ship.getLayoutY());
+        imageView.setLayoutX(ship.getLayoutX());
+        group.getChildren().add(imageView);
+
+        /* Animation of the ImageView */
+        Path path = new Path();
+        path.getElements().add(new MoveTo(x ,y));
+        ArcTo arc = new ArcTo();
+        arc.setX(107-ship.getLayoutX());
+        arc.setY(245-ship.getLayoutY());
+        arc.setRadiusX(50);
+        arc.setRadiusY(50);
+        path.getElements().add(arc);
+        PathTransition pt = new PathTransition();
+        pt.setDuration(Duration.millis(1750));
+        pt.setNode(imageView);
+        pt.setCycleCount(1);
+        pt.setPath(path);
+
+        ScaleTransition st = new ScaleTransition(Duration.millis(1750), imageView);
+        st.setCycleCount(1);
+        st.setToX(0.5);
+        st.setToY(0.5);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(2500));
+        fade.setCycleCount(1);
+        fade.setToValue(0);
+        fade.setNode(imageView);
+
+        /* Starts the animation */
+        pt.play();
+        st.play();
+        fade.play();
+    }
+
     public Label formatLabel(Label label, int y){
         label.setLayoutY(y);
         label.setLayoutX(423);
@@ -358,6 +403,10 @@ public class Controller {
                 group.getChildren().add(text);
             }
         } else if (game.getScore() >= 100_000) {
+            ImageView[] happyFish = generateImageView("happyFish",100,64,64);
+            for(ImageView imageView:happyFish){
+                group.getChildren().add(imageView);
+            }
             Text text1 = new Text(100,23,"Du nåede at indsamle 100.000 tons plastik inden år 2050!" +
                                                  "\n Allerede i " + game.getGameDateMessage() + " havde du indsamlet " + game.getScore() + " tons!");
             text1.setFill(Color.web("#000000"));
@@ -400,19 +449,25 @@ public class Controller {
         ImageView[] imageViews = new ImageView[amount];
 
         for (int i = 0; i < imageViews.length; i++){
-            /* Random number generation for x and y coordinates.
-            *  Number is between min/max value and Image size   */
             Random rng = new Random();
-            int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue()+(imageWidth*2)
-                    ,game.getCurrentRoom().getMaxXValue()*2-(imageWidth-(imageWidth/2)));
-            int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue()+(imageHeight)
-                    ,game.getCurrentRoom().getMaxYValue()*2-(imageHeight-(imageHeight/2)));
-            /* ImageView object created with the given sourceDirectory as Image */
-            imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/"+sourceDirectory+".png"));
-            /* Method to animate ImageViews */
-            generateAnimation(imageViews[i],rngX,rngY);
-
-        } return imageViews;
+            if(!Objects.equals(sourceDirectory, "happyFish")) {
+                /* Random number generation for x and y coordinates.
+                 *  Number is between min/max value and Image size   */
+                int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue() + (imageWidth * 2)
+                        , game.getCurrentRoom().getMaxXValue() * 2 - (imageWidth - (imageWidth / 2)));
+                int rngY = rng.nextInt(game.getCurrentRoom().getMinYValue() + (imageHeight)
+                        , game.getCurrentRoom().getMaxYValue() * 2 - (imageHeight - (imageHeight / 2)));
+                /* ImageView object created with the given sourceDirectory as Image */
+                imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/" + sourceDirectory + ".png"));
+                /* Method to animate ImageViews */
+                generateAnimation(imageViews[i], rngX, rngY);
+            } else {
+                int rngX = rng.nextInt(318,604);
+                int rngY = rng.nextInt(0,534);
+                imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/" + sourceDirectory + ".png"));
+                generateAnimation(imageViews[i],rngX,rngY);
+            }
+            } return imageViews;
     }
     /** Method to merge 4 ImageView[] into one ImageView[]
      *  Takes 4 ImageView[] as parameter.                   **/
