@@ -16,6 +16,10 @@ public class Game {
     private Ship skipperSkrald = new Ship();
     private Room aboveHarbor;
     private int amountOfInteractions;
+    private int z = 10;
+    public int getZ(){
+        return z;
+    }
     public Room getAboveHarbor() {
         return aboveHarbor;
     }
@@ -24,12 +28,16 @@ public class Game {
 
         if (amountOfInteractions >= 22 && skipperSkrald.getCapacity()<14_000) {
             skipperSkrald.setCapacityMax(14_000);
+            z = 24;
         } else if (amountOfInteractions >= 14 && skipperSkrald.getCapacity()<12_000) {
             skipperSkrald.setCapacityMax(12_000);
+            z = 20;
         } else if (amountOfInteractions >= 8 && skipperSkrald.getCapacity()<10_000) {
             skipperSkrald.setCapacityMax(10_000);
+            z = 16;
         } else if (amountOfInteractions >= 3 && skipperSkrald.getCapacity()<8_000) {
             skipperSkrald.setCapacityMax(8_000);
+            z = 12;
         }
     }
     public Game() {                                     // Constructor for the game class

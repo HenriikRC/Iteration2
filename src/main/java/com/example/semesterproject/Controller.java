@@ -29,11 +29,12 @@ public class Controller {
     private ImageView background, ship, minimap, viewPlastic, viewFish, mapMarker, dialogBox;
     private Group group;
     private Stage stage;
-    private int x = 0, y = 0;
+    private int x = 0, y = 0, z;
     private Game game;
     public void setGame(Game game){
         this.game = game;
         dateLabel.setText(game.getGameDateMessage());
+        z = game.getZ();
     }
 
     public void setStage(Stage stage){
@@ -43,7 +44,7 @@ public class Controller {
     public void up() {
         if (y >= -290 && (game.getCurrentRoom()).getMinYValue()<y) {
             ship.setRotate(0);
-            ship.setY(y-=10);
+            ship.setY(y-=z);
         }
         if (y <= -291){
             game.goRoom(game.getCommand("sejl", "nord"));
@@ -53,7 +54,7 @@ public class Controller {
     public void down() {
         if (y <= 290 && (game.getCurrentRoom()).getMaxYValue()>y){
             ship.setRotate(180);
-            ship.setY(y+=10);
+            ship.setY(y+=z);
         }
         if (y >= 291 && game.getCurrentRoom()!=game.getAboveHarbor()){
             ship.setRotate(180);
@@ -68,7 +69,7 @@ public class Controller {
     public void left() {
         if (x >= -290 && (game.getCurrentRoom()).getMinXValue()<x){
             ship.setRotate(270);
-            ship.setX(x-=10);
+            ship.setX(x-=z);
         }
         if (x <=-291){
             game.goRoom(game.getCommand("sejl","vest"));
@@ -78,7 +79,7 @@ public class Controller {
     public void right() {
         if (x <= 290 && (game.getCurrentRoom()).getMaxXValue()>x){
             ship.setRotate(90);
-            ship.setX(x+=10);
+            ship.setX(x+=z);
         }
         if (x >= 291){
             game.goRoom(game.getCommand("sejl","øst"));
@@ -325,7 +326,8 @@ public class Controller {
         group.getChildren().remove(label);
         infoLabel = new Label();
         infoLabel.setText("Du har gjordt et fantastisk arbejde!" +"\n"+"FN har sponsorert en opgradering til dit skib."
-                + "\n"+ "Du kan nu laste dit skib med " +game.getShipCapacityMax()+ " tons");
+                + "\n"+ "Du kan nu laste dit skib med " +game.getShipCapacityMax()+ " tons."
+                + "\nDesuden er din motor blevet tunet!");
         infoLabel = formatLabel(infoLabel,662);
 
         group.getChildren().remove(upgradeAvailable);
@@ -338,6 +340,7 @@ public class Controller {
             interactWithDeadFish();
         } else {
             game.upgradeShip();
+            z = game.getZ();
             updateScoreLabel();
             upgradeDone(infoLabel);
         }
