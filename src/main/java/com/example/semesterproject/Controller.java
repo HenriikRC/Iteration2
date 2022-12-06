@@ -27,7 +27,6 @@ public class Controller {
     private Label dateLabel, scoreLabel, infoLabel, upgradeAvailable;
     @FXML
     private ImageView background, ship, minimap, viewPlastic, viewFish, mapMarker, dialogBox;
-//    private Text upgradeAvailable;
     private Group group;
     private Stage stage;
     private int x = 0, y = 0;
@@ -43,7 +42,6 @@ public class Controller {
     }
 
     public void up() {
-        //System.out.println("UP");
         if (y >= -290 && (game.getCurrentRoom()).getMinYValue()<y) {
             ship.setRotate(0);
             ship.setY(y-=10);
@@ -54,7 +52,6 @@ public class Controller {
         }
     }
     public void down() {
-        //System.out.println("DOWN");
         if (y <= 290 && (game.getCurrentRoom()).getMaxYValue()>y){
             ship.setRotate(180);
             ship.setY(y+=10);
@@ -70,7 +67,6 @@ public class Controller {
         }
     }
     public void left() {
-        //System.out.println("LEFT");
         if (x >= -290 && (game.getCurrentRoom()).getMinXValue()<x){
             ship.setRotate(270);
             ship.setX(x-=10);
@@ -81,7 +77,6 @@ public class Controller {
         }
     }
     public void right() {
-        //System.out.println("RIGHT");
         if (x <= 290 && (game.getCurrentRoom()).getMaxXValue()>x){
             ship.setRotate(90);
             ship.setX(x+=10);
@@ -177,12 +172,14 @@ public class Controller {
             if(game.collect()){
                 removePlasticUI();
                 viewPlastic = null;
+            } else {
+                fullCapacityMessage();
             }
         } else if (game.isHarbor()){
             disposeDone(infoLabel);
             game.dispose();
             group.getChildren().add(upgradeAvailable());
-            if(game.getScore() == 100_000){
+            if(game.getScore() >= 100_000){
                 quit();
             } else {
                 System.out.println(game.getScore());
@@ -193,7 +190,7 @@ public class Controller {
 
     private void fullCapacityMessage() {
         infoLabel= new Label();
-        infoLabel.setText("Du har ikke mere kapacitet, Bortskaf plast i havnen.");
+        infoLabel.setText("Du har ikke mere kapacitet.\nBortskaf plast i havnen.");
         infoLabel.setLayoutY(662);
         infoLabel.setLayoutX(423);
         infoLabel.setWrapText(true);
@@ -232,13 +229,7 @@ public class Controller {
     public void deadFishInfoBoxShow(){
         infoLabel = new Label();
         infoLabel.setText(game.getCurrentRoom().getDeadFishDeath().getDeathReason());
-        infoLabel.setAlignment(Pos.CENTER);
-        infoLabel.setLayoutY(662);
-        infoLabel.setLayoutX(423);
-        infoLabel.setWrapText(true);
-        infoLabel.setMaxWidth(330);
-
-        infoLabel.setFont(new Font("System Bold", 15));
+        infoLabel = formatLabel(infoLabel,662);
         group.getChildren().add(infoLabel);
 
     }
@@ -254,28 +245,30 @@ public class Controller {
     public boolean checkPlasticPlacement() {
         return ship.getBoundsInParent().intersects(viewPlastic.getBoundsInParent());
     }
-    public void disposeDone(Label label){
-        group.getChildren().remove(label);
-        infoLabel = new Label();
-        infoLabel.setText("Du har genbrugt " + game.getShipCapacity()+ " tons plastik. Din score i alt er nu: "
-                +(game.getScore()+ game.getShipCapacity()));
-        infoLabel.setLayoutY(662);
-        infoLabel.setLayoutX(423);
-        infoLabel.setWrapText(true);
-        infoLabel.setMaxWidth(330);
 
-        infoLabel.setFont(new Font("System Bold", 15));
-        group.getChildren().add(infoLabel);
+    public void disposeDone(Label label){
+        if(game.getShipCapacity()>0) {
+            group.getChildren().remove(label);
+            infoLabel = new Label();
+            infoLabel.setText("Du har genbrugt " + game.getShipCapacity() + " tons plastik. Din score i alt er nu: "
+                    + (game.getScore() + game.getShipCapacity()));
+            infoLabel = formatLabel(infoLabel, 662);
+            group.getChildren().add(infoLabel);
+        }
     }
+    public Label formatLabel(Label label, int y){
+        label.setLayoutY(y);
+        label.setLayoutX(423);
+        label.setWrapText(true);
+        label.setMaxWidth(330);
+        label.setFont(new Font("System Bold", 15));
+        return label;
+    }
+
     public Label upgradeAvailable() {
         upgradeAvailable = new Label();
         upgradeAvailable.setText("Du kan opgradere dit skib! Tryk >mellemrum< for at opgrade");
-        upgradeAvailable.setLayoutY(698);
-        upgradeAvailable.setLayoutX(423);
-        upgradeAvailable.setWrapText(true);
-        upgradeAvailable.setMaxWidth(330);
-
-        upgradeAvailable.setFont(new Font("System Bold", 15));
+        formatLabel(upgradeAvailable,698);
 
         if(game.isHarbor() && game.getScore()>=48_000 && game.getShipCapacityMax() < 14_000){
             return upgradeAvailable;
@@ -284,7 +277,6 @@ public class Controller {
         } else if (game.isHarbor() && game.getScore()>=14_000 && game.getShipCapacityMax() < 10_000){
             return upgradeAvailable;
         } else if (game.isHarbor() && game.getScore()>=6_000 && game.getShipCapacityMax() < 8_000){
-            System.out.println("Hej");
             return upgradeAvailable;
         } else return new Label("");
     }
@@ -293,27 +285,18 @@ public class Controller {
         infoLabel = new Label();
         infoLabel.setText("Du har gjordt et fantastisk arbejde!" +"\n"+"FN har sponsorert en opgradering til dit skib."
                 + "\n"+ "Du kan nu laste dit skib med " +game.getShipCapacityMax()+ " tons");
-        infoLabel.setLayoutY(662);
-        infoLabel.setLayoutX(423);
-        infoLabel.setWrapText(true);
-        infoLabel.setMaxWidth(330);
-
-        infoLabel.setFont(new Font("System Bold", 15));
+        infoLabel = formatLabel(infoLabel,662);
 
         group.getChildren().remove(upgradeAvailable);
         group.getChildren().add(infoLabel);
         upgradeAvailable = null;
     }
 
-    public void upgradeShip(){
-        game.upgradeShip();
-    }
-
     public void interact(){
         if(!game.isHarbor()){
             interactWithDeadFish();
         } else {
-            upgradeShip();
+            game.upgradeShip();
             updateScoreLabel();
             upgradeDone(infoLabel);
         }
@@ -366,14 +349,20 @@ public class Controller {
 
             /* Styling for text and adding them to the group */
             for(Text text:endTexts){
-                text.setFill(Color.web("#FFFFFF"));
+                text.setFill(Color.web("#000000"));
                 text.setStrokeWidth(1);
-                text.setStroke(Color.web("000000"));
+                text.setStroke(Color.web("#ffa700"));
                 text.setFont(new Font("System Bold", 22));
                 group.getChildren().add(text);
             }
         } else if (game.getScore() >= 100_000) {
-
+            Text text1 = new Text(100,23,"Du nåede at indsamle 100.000 tons plastik inden år 2050!" +
+                                                 "\n Allerede i " + game.getGameDateMessage() + " havde du indsamlet " + game.getScore() + " tons!");
+            text1.setFill(Color.web("#000000"));
+            text1.setStrokeWidth(1);
+            text1.setStroke(Color.web("ffa700"));
+            text1.setFont(new Font("System Bold", 22));
+            group.getChildren().add(text1);
         }
         /* Adds ship and character Skipper Skrald to the group */
         group.getChildren().addAll(ship,skipperSkrald);

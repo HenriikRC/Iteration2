@@ -24,9 +24,7 @@ public class HelloApplication extends Application {
         controller.setStage(stage);
         controller.setGame(new Game());
 
-        Image bg = new Image("file:src/main/resources/MapFiles/havn.png");
-        ImageView mv = new ImageView(bg);
-        mv.setId("background");
+        ImageView mv = new ImageView(new Image("file:src/main/resources/MapFiles/havn.png"));
 
         Image start = new Image("file:src/main/resources/Misc/start.png");
         ImageView show = new ImageView(start);
@@ -34,9 +32,8 @@ public class HelloApplication extends Application {
         controller.updateScoreLabel();
         Group group = new Group();
 
-        group.getChildren().add(mv);
-        group.getChildren().add(root);
-        group.getChildren().add(startLabel);
+        group.getChildren().addAll(mv,root,startLabel);
+
         EventHandler<MouseEvent> handleRemove = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
