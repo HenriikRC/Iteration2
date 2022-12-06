@@ -7,7 +7,7 @@ public class DeadFish implements Spawnable {
     private ArrayList<String> reasons = new ArrayList<>(); {    //Creates an arraylist for plastic information
         reasons.add("Estimeret er der 300k hvaler, delfiner og marsvin der dør årligt grundet forladte fiskenet\nfauna-flora.org");
         reasons.add("I 2019 blev en strandet hval fundet med 40kg. plastik i maven (Hovedsagligt bestående af engangsplastikposer)\nfauna-flora.org");
-        reasons.add("Havskildpadder tager ofte fejl af plastikposer og fiskenet da det ligner vandmænd og tang som er deres mest normale kost\nfauna-flora.org");
+        reasons.add("Havskildpadder indtager ofte fejl af plastikposer og fiskenet da det ligner deres vandte kost\nfauna-flora.org");
         reasons.add("Når havskildpadder spiser plastik får det dem til at føle sig mæt som resultere i sult\nfauna-flora.org");
         reasons.add("Ifølge en samling af 100 undersøgelser indeholdende 500 arter af fisk har 2/3 indtaget mikroplastik\nfauna-flora.org");
         reasons.add("100% af muslinger fanget i United Kingdoms hav indeholder mikroplastik\nfauna-flora.org");
