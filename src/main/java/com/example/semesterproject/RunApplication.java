@@ -15,11 +15,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import worldOfZuul.*;
 
-public class HelloApplication extends Application {
+public class RunApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Skipper-Skrald.fxml"));
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.setStage(stage);
