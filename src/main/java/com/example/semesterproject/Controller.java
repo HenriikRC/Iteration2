@@ -1,5 +1,8 @@
 package com.example.semesterproject;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.PathTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -9,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -256,8 +260,49 @@ public class Controller {
                     + (game.getScore() + game.getShipCapacity()));
             infoLabel = formatLabel(infoLabel, 662);
             group.getChildren().add(infoLabel);
+
+            animateDispose();
+
         }
     }
+
+    private void animateDispose() {
+        ImageView imageView = new ImageView(new Image("file:src/main/resources/Sprites/skraldL.png"));
+        imageView.setLayoutY(ship.getLayoutY());
+        imageView.setLayoutX(ship.getLayoutX());
+        group.getChildren().add(imageView);
+
+        /* Animation of the ImageView */
+        Path path = new Path();
+        path.getElements().add(new MoveTo(x ,y));
+        ArcTo arc = new ArcTo();
+        arc.setX(107-ship.getLayoutX());
+        arc.setY(245-ship.getLayoutY());
+        arc.setRadiusX(50);
+        arc.setRadiusY(50);
+        path.getElements().add(arc);
+        PathTransition pt = new PathTransition();
+        pt.setDuration(Duration.millis(1750));
+        pt.setNode(imageView);
+        pt.setCycleCount(1);
+        pt.setPath(path);
+
+        ScaleTransition st = new ScaleTransition(Duration.millis(1750), imageView);
+        st.setCycleCount(1);
+        st.setToX(0.5);
+        st.setToY(0.5);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(2500));
+        fade.setCycleCount(1);
+        fade.setToValue(0);
+        fade.setNode(imageView);
+
+        /* Starts the animation */
+        pt.play();
+        st.play();
+        fade.play();
+    }
+
     public Label formatLabel(Label label, int y){
         label.setLayoutY(y);
         label.setLayoutX(423);
@@ -402,7 +447,6 @@ public class Controller {
     private ImageView[] generateImageView(String sourceDirectory, int amount, int imageHeight, int imageWidth){
         /* ImageView[] with length of amount*/
         ImageView[] imageViews = new ImageView[amount];
-
 
         for (int i = 0; i < imageViews.length; i++){
             Random rng = new Random();
