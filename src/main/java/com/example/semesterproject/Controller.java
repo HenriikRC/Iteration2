@@ -24,10 +24,10 @@ import java.util.*;
 public class Controller {
 
     @FXML
-    private Label dateLabel, scoreLabel, infoLabel;
+    private Label dateLabel, scoreLabel, infoLabel, upgradeAvailable;
     @FXML
     private ImageView background, ship, minimap, viewPlastic, viewFish, mapMarker, dialogBox;
-    private Text upgradeAvailable;
+//    private Text upgradeAvailable;
     private Group group;
     private Stage stage;
     private int x = 0, y = 0;
@@ -267,15 +267,16 @@ public class Controller {
         infoLabel.setFont(new Font("System Bold", 15));
         group.getChildren().add(infoLabel);
     }
-    public Text upgradeAvailable() {
-        Text upgradeAvailable = new Text("Du kan opgradere dit skib! Tryk >mellemrum< for at opgrade");
-        upgradeAvailable.setFill(Color.web("#FFFFFF"));
-        upgradeAvailable.setStrokeWidth(1);
-        upgradeAvailable.setStroke(Color.web("000000"));
-        upgradeAvailable.setFont(new Font("System Bold", 22));
-        upgradeAvailable.setLayoutX(80);
-        upgradeAvailable.setLayoutY(500);
-        this.upgradeAvailable = upgradeAvailable;
+    public Label upgradeAvailable() {
+        upgradeAvailable = new Label();
+        upgradeAvailable.setText("Du kan opgradere dit skib! Tryk >mellemrum< for at opgrade");
+        upgradeAvailable.setLayoutY(698);
+        upgradeAvailable.setLayoutX(423);
+        upgradeAvailable.setWrapText(true);
+        upgradeAvailable.setMaxWidth(330);
+
+        upgradeAvailable.setFont(new Font("System Bold", 15));
+
         if(game.isHarbor() && game.getScore()>=48_000 && game.getShipCapacityMax() < 14_000){
             return upgradeAvailable;
         } else if (game.isHarbor() && game.getScore()>=24_000 && game.getShipCapacityMax() < 12_000){
@@ -285,7 +286,7 @@ public class Controller {
         } else if (game.isHarbor() && game.getScore()>=6_000 && game.getShipCapacityMax() < 8_000){
             System.out.println("Hej");
             return upgradeAvailable;
-        } else return new Text("");
+        } else return new Label("");
     }
     public void upgradeDone(Label label){
         group.getChildren().remove(label);
@@ -298,8 +299,9 @@ public class Controller {
         infoLabel.setMaxWidth(330);
 
         infoLabel.setFont(new Font("System Bold", 15));
-        group.getChildren().add(infoLabel);
+
         group.getChildren().remove(upgradeAvailable);
+        group.getChildren().add(infoLabel);
         upgradeAvailable = null;
     }
 
