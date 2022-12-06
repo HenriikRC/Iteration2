@@ -48,7 +48,7 @@ public class HelloApplication extends Application {
 
         stage.setResizable(false);
         stage.setTitle("Skipper Skrald");
-        stage.setScene(sc);
+        //stage.setScene(sc);
         stage.show();
 
         sc.setOnKeyPressed(new EventHandler<KeyEvent>() {

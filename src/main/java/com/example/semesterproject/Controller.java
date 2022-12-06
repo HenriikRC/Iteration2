@@ -2,7 +2,6 @@ package com.example.semesterproject;
 
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -10,9 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -31,6 +27,11 @@ public class Controller {
     private Stage stage;
     private int x = 0, y = 0;
     private Game game;
+    private int amountOfInteractions;
+
+    public int getAmountOfInteractions() {
+        return amountOfInteractions;
+    }
 
     public void setGame(Game game){
         this.game = game;
@@ -222,6 +223,7 @@ public class Controller {
             game.getDeathReason();
             removeDeadFishUI();
             viewFish = null;
+            game.incrementAmountOfInteractions();
         } else if(game.getDeadFishInteracted() && viewFish==null){
             deadFishInfoRemove(infoLabel);
         }
@@ -270,13 +272,13 @@ public class Controller {
         upgradeAvailable.setText("Du kan opgradere dit skib! Tryk >mellemrum< for at opgrade");
         formatLabel(upgradeAvailable,698);
 
-        if(game.isHarbor() && game.getScore()>=48_000 && game.getShipCapacityMax() < 14_000){
+        if(game.isHarbor() && game.getAmountOfInteractions()>=22 && game.getShipCapacityMax() < 14_000){
             return upgradeAvailable;
-        } else if (game.isHarbor() && game.getScore()>=24_000 && game.getShipCapacityMax() < 12_000){
+        } else if (game.isHarbor() && game.getAmountOfInteractions()>=14 && game.getShipCapacityMax() < 12_000){
             return upgradeAvailable;
-        } else if (game.isHarbor() && game.getScore()>=14_000 && game.getShipCapacityMax() < 10_000){
+        } else if (game.isHarbor() && game.getAmountOfInteractions()>=8 && game.getShipCapacityMax() < 10_000){
             return upgradeAvailable;
-        } else if (game.isHarbor() && game.getScore()>=6_000 && game.getShipCapacityMax() < 8_000){
+        } else if (game.isHarbor() && game.getAmountOfInteractions()>=3 && game.getShipCapacityMax() < 8_000){
             return upgradeAvailable;
         } else return new Label("");
     }
