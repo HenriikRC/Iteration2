@@ -10,27 +10,25 @@ public class Game {
     private CommandWords commands;
     private boolean isCollected;                        // True if plastic in current room has been collected once.
     private boolean deadFishInteracted = false;
-    private Date gameDate = new Date(122,          // Sets the date for the start of the game to October 2022.
+    private Date gameDate = new Date(122,         // Sets the date for the start of the game to October 2022.
             Calendar.OCTOBER,0);
     private Room gameHarbor;
     private Ship skipperSkrald = new Ship();
     private Room aboveHarbor;
-
+    private int amountOfInteractions;
     public Room getAboveHarbor() {
         return aboveHarbor;
     }
-    public boolean isDeadFishInteracted(){
-        return deadFishInteracted;
-    }
+
     public void upgradeShip() {
 
-        if (getScore() > 48_000) {
+        if (amountOfInteractions >= 22) {
             skipperSkrald.setCapacityMax(14_000);
-        } else if (getScore() > 24_000) {
+        } else if (amountOfInteractions >= 14) {
             skipperSkrald.setCapacityMax(12_000);
-        } else if (getScore() > 12_000) {
+        } else if (amountOfInteractions >= 8) {
             skipperSkrald.setCapacityMax(10_000);
-        } else if (getScore() > 6_000) {
+        } else if (amountOfInteractions >= 3) {
             skipperSkrald.setCapacityMax(8_000);
         }
     }
@@ -80,9 +78,6 @@ public class Game {
         //Changed Object type from Room to Harbor
         Harbor = new Harbor("nu i havnen","Du er i havnen","file:src/main/resources/MapFiles/havn.png",-100,120,-384,150,66,742);
         gameHarbor = Harbor;
-
-        // Room[] allOcean = {A1,A2,A3,A4,A5,B1,B3,B4,B5,C1,C3,D1,D3,D4,D5,E1,E3,E4,E5};
-        // Room[] allIslands = {B2,C2,C4,C5,D2,E2};
 
         // Setting exits for all the rooms
         Harbor.setExit("nord",E3);
@@ -157,33 +152,39 @@ public class Game {
     }
 
 
-                                        /* Accesor Methods */
+                                        /* Accessor Methods */
     public boolean getDeadFishInteracted(){
         return deadFishInteracted;
     }
-    public void getDeathReason() {           //Accesor method for deathreason of a DeadFish object
+    public void getDeathReason() {           //Accessor method for deathReason of a DeadFish object
         System.out.println(currentRoom.getDeadFishDeath());
         deadFishInteracted = true;
     }
-    public String getRoomDescription() {                    //Accesor method for the description of a room
+    public String getRoomDescription() {                    //Accessor method for the description of a room
         return currentRoom.getLongDescription();
     }
-    public String getNavigation() {                         //Accesor method for the navigation
+    public String getNavigation() {                         //Accessor method for the navigation
         return currentRoom.getWhereToSailNext();
     }
-    public List<String> getCommandDescriptions() {          //Accesor method for commands
+    public List<String> getCommandDescriptions() {          //Accessor method for commands
         return commands.getCommandWords();
     }
     public Command getCommand(String word1, String word2) { //???
         return new CommandImplementation(commands.getCommand(word1), word2);
     }
-    public int getShipCapacity(){                           //Accesor method to return the current used capacity on the ship.
+    public int getAmountOfInteractions() {
+        return amountOfInteractions;
+    }
+    public void incrementAmountOfInteractions() {
+        this.amountOfInteractions++;
+    }
+    public int getShipCapacity(){                           //Accessor method to return the current used capacity on the ship.
         return skipperSkrald.getCapacity();
     }
     public int getShipCapacityMax(){
         return skipperSkrald.getCapacityMax();
     }
-    public boolean getIsCollected(){                        //Accesor method for the is collected boolean
+    public boolean getIsCollected(){                        //Accessor method for the is collected boolean
         return isCollected;
     }
     public long getScore(){                                 // Returns the score
@@ -206,7 +207,7 @@ public class Game {
         return currentRoom.isHarbor();
     }
 
-    public CommandWords getCommands() {                     //???
+    public CommandWords getCommands() {
         return commands;
     }
 
@@ -219,7 +220,6 @@ public class Game {
         }
 
         String direction = command.getCommandValue();
-
         Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
@@ -262,10 +262,6 @@ public class Game {
         return gameDate.compareTo(new Date(149, 10, 29)) >= 0;
     }
 
-    /** Calculates and increments the date of the game */
-    public Date getGameDate(){
-            return gameDate;
-    }
     public String getGameDateMessage(){
         String[] months = {"Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli",  // String array of all the months
                 "August", "September", "Oktober", "November", "December"};
