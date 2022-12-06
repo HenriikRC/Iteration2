@@ -16,6 +16,7 @@ import java.io.IOException;
 import worldOfZuul.*;
 
 public class HelloApplication extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));

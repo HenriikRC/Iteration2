@@ -396,9 +396,9 @@ public class Controller {
 
             /* Styling for text and adding them to the group */
             for(Text text:endTexts){
-                text.setFill(Color.web("#000000"));
+                text.setFill(Color.web("#ffffff"));
                 text.setStrokeWidth(1);
-                text.setStroke(Color.web("#ffa700"));
+                text.setStroke(Color.web("#000000"));
                 text.setFont(new Font("System Bold", 22));
                 group.getChildren().add(text);
             }
@@ -407,11 +407,11 @@ public class Controller {
             for(ImageView imageView:happyFish){
                 group.getChildren().add(imageView);
             }
-            Text text1 = new Text(100,23,"Du nåede at indsamle 100.000 tons plastik inden år 2050!" +
+            Text text1 = new Text(80,680,"Du nåede at indsamle 100.000 tons plastik inden år 2050!" +
                                                  "\n Allerede i " + game.getGameDateMessage() + " havde du indsamlet " + game.getScore() + " tons!");
-            text1.setFill(Color.web("#000000"));
+            text1.setFill(Color.web("#ffffff"));
             text1.setStrokeWidth(1);
-            text1.setStroke(Color.web("ffa700"));
+            text1.setStroke(Color.web("#000000"));
             text1.setFont(new Font("System Bold", 22));
             group.getChildren().add(text1);
         }
@@ -450,7 +450,7 @@ public class Controller {
 
         for (int i = 0; i < imageViews.length; i++){
             Random rng = new Random();
-            if(!Objects.equals(sourceDirectory, "happyFish")) {
+            if(!Objects.equals(sourceDirectory, "happyFish") && !game.isHarbor()) {
                 /* Random number generation for x and y coordinates.
                  *  Number is between min/max value and Image size   */
                 int rngX = rng.nextInt(game.getCurrentRoom().getMinXValue() + (imageWidth * 2)
@@ -462,7 +462,12 @@ public class Controller {
                 /* Method to animate ImageViews */
                 generateAnimation(imageViews[i], rngX, rngY);
             } else {
-                int rngX = rng.nextInt(318,604);
+                int rngX;
+                if(game.isIt2050()){
+                    rngX = rng.nextInt(318,538);
+                } else {
+                    rngX = rng.nextInt(318,604);
+                }
                 int rngY = rng.nextInt(0,534);
                 imageViews[i] = new ImageView(new Image("file:src/main/resources/Sprites/" + sourceDirectory + ".png"));
                 generateAnimation(imageViews[i],rngX,rngY);
